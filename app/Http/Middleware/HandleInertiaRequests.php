@@ -37,10 +37,16 @@ class HandleInertiaRequests extends Middleware
             ],
             'menus' => [
                 [
+                    'label' => 'Dashboard',
                     'route' => 'dashboard',
                     'icon' => 'mdiMonitor',
-                    'label' => 'Dashboard',
                     'isVisible' => true
+                ],
+                [
+                    'label' => 'User Management',
+                    'route' => 'users.index',
+                    'icon' => 'mdiAccountGroup',
+                    'isVisible' => true,
                 ],
             ],
             'ziggy' => fn () => [
