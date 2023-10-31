@@ -35,6 +35,14 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'menus' => [
+                [
+                    'route' => 'dashboard',
+                    'icon' => 'mdiMonitor',
+                    'label' => 'Dashboard',
+                    'isVisible' => true
+                ],
+            ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
