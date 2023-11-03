@@ -6,14 +6,12 @@ import DropdownLink from '@/Components/DropdownLink.vue'
 import { Link, usePage } from '@inertiajs/vue3'
 import {
     mdiBackburger,
-    mdiBell,
     mdiWhiteBalanceSunny,
     mdiWeatherNight,
     mdiForwardburger
 } from '@mdi/js'
 import BaseIcon from '@/Components/BaseIcon.vue'
 import { useLayoutStore } from '@/Store/layout.js'
-import 'vue3-toastify/dist/index.css'
 import { useStyleStore } from '@/Store/style.js'
 import AsideMenuList from '@/Components/AsideMenuList.vue'
 
@@ -32,6 +30,8 @@ const toggleDarkMode = () => {
 </script>
 
 <template>
+    <Toast />
+
     <div :class="['w-full h-screen', { dark: !useStyleStore().darkMode }]">
         <div
             class="max-w-[128rem] container bg-gray-50 dark:bg-slate-700 px-2 mx-auto"

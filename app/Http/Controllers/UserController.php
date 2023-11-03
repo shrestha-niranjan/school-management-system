@@ -49,6 +49,37 @@ class UserController extends Controller
         return Inertia::render('User/Create', $data);
     }
 
+    public function index(Request $request): Response
+    {
+        $paginationCount = $request->input('pagination_count', config('app.pagination'));
+
+        $data['items'] = UserResource::collection(
+            User::query()
+                ->withoutSuperAdmin()
+                ->with('roles')
+                ->latest()
+                ->paginate($paginationCount)
+                ->withQueryString()
+        );
+
+        $data['columns'] = [
+            [
+                'header' => 'Name',
+                'field' => 'name'
+            ],
+            [
+                'header' => 'Email',
+                'field' => 'email'
+            ],
+        ];
+
+        return
+            Inertia::render(
+                'User/Index',
+                $data
+            );
+    }
+
     public function store(StoreUserRequest $request): RedirectResponse
     {
         $data = $request->validated();
@@ -75,29 +106,5 @@ class UserController extends Controller
         $user->syncRoles($data['role']);
 
         return to_route('users.index');
-    }
-
-    public function index(Request $request): Response
-    {
-        $paginationCount = $request->input('pagination_count', 20);
-
-        $data['items'] = UserResource::collection(
-            User::query()
-                ->latest()
-                ->paginate($paginationCount)
-                ->withQueryString()
-        );
-
-        $data['headers'] = [
-            'Name',
-            'Email',
-            'Actions'
-        ];
-
-        return
-            Inertia::render(
-                'User/Index',
-                $data
-            );
     }
 }

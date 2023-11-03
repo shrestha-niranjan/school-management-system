@@ -17,6 +17,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'pagination' => env('DEFAULT_PAGINATION', 10),
 
     /*
     |--------------------------------------------------------------------------

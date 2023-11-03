@@ -1,112 +1,148 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { mdiArrowLeft, mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js'
+import { mdiPlus } from '@mdi/js'
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import Modal from '@/Components/Modal.vue'
-import { toast } from 'vue3-toastify'
-import 'vue3-toastify/dist/index.css'
-import BasicTable from '@/Components/BasicTable.vue'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
-import BaseButtons from '@/Components/BaseButtons.vue'
+import Tag from 'primevue/tag'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import Button from 'primevue/button'
+import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
+
+const toast = useToast()
+const confirm = useConfirm()
 
 defineOptions({
-  layout: AuthenticatedLayout
+    layout: AuthenticatedLayout
 })
 
 defineProps({
-  items: {
-    type: Object
-  },
-  headers: Array
+    items: {
+        type: Object
+    },
+    columns: Array
 })
 
 const openDeleteModal = ref(false)
 const selectedItemId = ref()
 const onDelete = () => {
-  router.delete(route('users.destroy', {user: selectedItemId.value}), {
-    onSuccess: () => {
-      toast('User deleted successfully!', {
-        autoClose: 3000,
-        type: 'success'
-      })
-      selectedItemId.value = null
-      openDeleteModal.value = false
-    }
-  })
+    router.delete(route('users.destroy', { user: selectedItemId.value }), {
+        onSuccess: () => {
+            toast('User deleted successfully!', {
+                autoClose: 3000,
+                type: 'success'
+            })
+            selectedItemId.value = null
+            openDeleteModal.value = false
+        }
+    })
 }
 
 const toggleDeleteModal = id => {
-  id ? (selectedItemId.value = id) : ''
-  openDeleteModal.value = !openDeleteModal.value
+    id ? (selectedItemId.value = id) : ''
+    openDeleteModal.value = !openDeleteModal.value
 }
 
-const fetchPaginatedData = (value) => {
-  router.get(route('users.index'), {pagination_count: value})
+const fetchPaginatedData = value => {
+    router.get(route('users.index'), { pagination_count: value })
+}
+
+const handleEdit = id => {
+    router.get(route('users.edit', { user: id }))
+}
+
+const handleDelete = id => {
+    confirm.require({
+        message: 'Are you sure you want to proceed?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            toast.add({
+                severity: 'info',
+                summary: 'Confirmed',
+                detail: 'You have accepted',
+                life: 3000
+            })
+        },
+        reject: () => {
+            toast.add({
+                severity: 'error',
+                summary: 'Rejected',
+                detail: 'You have rejected',
+                life: 3000
+            })
+        }
+    })
 }
 </script>
 
 <template>
-  <SectionMain>
-    <template #header>
-      <div class="flex justify-between items-center rounded">
-        <h1 class="text-lg font-semibold dark:text-white">Users</h1>
-        <BaseButton
-          class="bg-emerald-600 text-white"
-          label='Create'
-          :icon="mdiPlus"
-          :routeName="route('users.create')"
-        />
-      </div>
-    </template>
-    <template #main>
-      <BasicTable
-        @update:pagination="fetchPaginatedData"
-        :headers="['Name', 'Email', 'Role', 'Action']"
-        :items="items"
-        :actionWidth="'last:w-32'"
-      >
-        <template v-slot="{ item }">
-          <td data-label="Name">{{ item.name }}</td>
-          <td data-label="Email">{{ item.email }}</td>
-          <td data-label="Role">{{ item.email }}</td>
-          <td class="text-center w-20" data-label="Action">
-            <BaseButtons class="flex max-w-fit">
-              <BaseButton
-                class="bg-sky-500 hover:bg-sky-600 text-white rounded"
-                :routeName="route('users.edit', {user: item.id})"
-                :icon="mdiPencil"
-              />
-              <BaseButton
-                class="bg-red-500 hover:bg-red-600 text-white rounded"
-                @click="toggleDeleteModal(item.id)"
-                :icon="mdiTrashCan"
-              />
-            </BaseButtons>
-          </td>
-        </template>
-      </BasicTable>
+    <ConfirmDialog></ConfirmDialog>
 
-      <Modal v-model:show="openDeleteModal">
-        <div class="h-44 flex flex-col justify-center px-6 gap-6">
-          <p>Are you sure you want to delete?</p>
-          <div class="flex justify-between gap-2">
-            <BaseButton
-              @click="toggleDeleteModal"
-              class="bg-red-600 text-white hover:bg-red-700 duration-500"
-              :icon="mdiArrowLeft"
-              label="Back"
-            />
-            <BaseButton
-              @click="onDelete"
-              class="bg-sky-600 text-white hover:bg-sky-700 duration-500"
-              :icon="mdiTrashCan"
-              label="Delete"
-            />
-          </div>
-        </div>
-      </Modal>
-    </template>
-  </SectionMain>
+    <SectionMain>
+        <template #header>
+            <div class="flex justify-between items-center rounded">
+                <h1 class="text-lg font-semibold dark:text-white">Users</h1>
+                <BaseButton
+                    class="bg-emerald-600 text-white"
+                    label="Create"
+                    :icon="mdiPlus"
+                    :routeName="route('users.create')"
+                />
+            </div>
+        </template>
+        <template #main>
+            <DataTable
+                :value="items.data"
+                :rows="items.meta.per_page"
+                paginator
+                tableStyle="min-width: 50rem"
+            >
+                <Column header="#" headerStyle="width:3rem">
+                    <template #body="slotProps">
+                        {{ slotProps.index + 1 }}
+                    </template>
+                </Column>
+
+                <Column
+                    v-for="(column, index) in columns"
+                    :field="column.field"
+                    :header="column.header"
+                />
+
+                <Column field="role" header="Role" style="min-width: 100px">
+                    <template #body="slotProps">
+                        <Tag
+                            :value="slotProps.data.role"
+                            :severity="'success'"
+                        />
+                    </template>
+                </Column>
+
+                <Column :exportable="false" style="min-width: 8rem">
+                    <template #body="slotProps">
+                        <Button
+                            icon="pi pi-pencil"
+                            outlined
+                            rounded
+                            class="mr-2 border border-green-500 h-10 w-10 text-green-500"
+                            @click="handleEdit(slotProps.data.id)"
+                        />
+
+                        <Button
+                            icon="pi pi-trash"
+                            outlined
+                            rounded
+                            severity="danger"
+                            class="border border-red-500 h-10 w-10 text-red-500"
+                            @click="handleDelete(slotProps.data)"
+                        />
+                    </template>
+                </Column>
+            </DataTable>
+        </template>
+    </SectionMain>
 </template>

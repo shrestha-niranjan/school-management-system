@@ -7,6 +7,14 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import { createPinia } from 'pinia'
 import { useStyleStore } from '@/Store/style.js'
+import PrimeVue from 'primevue/config'
+import 'primevue/resources/themes/lara-light-teal/theme.css'
+import 'primeicons/primeicons.css'
+import Toast from 'primevue/toast'
+
+import ConfirmationService from 'primevue/confirmationservice'
+import ToastService from 'primevue/toastservice'
+import ConfirmDialog from 'primevue/confirmdialog'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 const pinia = createPinia()
@@ -23,6 +31,11 @@ createInertiaApp({
             .use(plugin)
             .use(pinia)
             .use(ZiggyVue, Ziggy)
+            .use(PrimeVue, { ripple: true })
+            .use(ToastService)
+            .use(ConfirmationService)
+            .component('Toast', Toast)
+            .component('ConfirmDialog', ConfirmDialog)
             .mount(el)
     },
     progress: {
