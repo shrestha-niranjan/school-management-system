@@ -15,6 +15,9 @@ import Toast from 'primevue/toast'
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice'
 import ConfirmDialog from 'primevue/confirmdialog'
+import InputText from 'primevue/inputtext'
+import InlineMessage from 'primevue/inlinemessage'
+import Password from 'primevue/password'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 const pinia = createPinia()
@@ -36,6 +39,9 @@ createInertiaApp({
             .use(ConfirmationService)
             .component('Toast', Toast)
             .component('ConfirmDialog', ConfirmDialog)
+            .component('InputText', InputText)
+            .component('InlineMessage', InlineMessage)
+            .component('Password', Password)
             .mount(el)
     },
     progress: {
