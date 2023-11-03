@@ -2,7 +2,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { mdiPlus } from '@mdi/js'
 import { router } from '@inertiajs/vue3'
-import { ref } from 'vue'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
 import Tag from 'primevue/tag'
@@ -26,30 +25,6 @@ defineProps({
     columns: Array
 })
 
-const openDeleteModal = ref(false)
-const selectedItemId = ref()
-const onDelete = () => {
-    router.delete(route('users.destroy', { user: selectedItemId.value }), {
-        onSuccess: () => {
-            toast('User deleted successfully!', {
-                autoClose: 3000,
-                type: 'success'
-            })
-            selectedItemId.value = null
-            openDeleteModal.value = false
-        }
-    })
-}
-
-const toggleDeleteModal = id => {
-    id ? (selectedItemId.value = id) : ''
-    openDeleteModal.value = !openDeleteModal.value
-}
-
-const fetchPaginatedData = value => {
-    router.get(route('users.index'), { pagination_count: value })
-}
-
 const handleEdit = id => {
     router.get(route('users.edit', { user: id }))
 }
@@ -60,19 +35,15 @@ const handleDelete = id => {
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-            toast.add({
-                severity: 'info',
-                summary: 'Confirmed',
-                detail: 'You have accepted',
-                life: 3000
-            })
-        },
-        reject: () => {
-            toast.add({
-                severity: 'error',
-                summary: 'Rejected',
-                detail: 'You have rejected',
-                life: 3000
+            router.delete(route('users.destroy', { user: id }), {
+                onSuccess: () => {
+                    toast.add({
+                        severity: 'info',
+                        summary: 'Confirmed',
+                        detail: 'User deleted successfully :)',
+                        life: 3000
+                    })
+                }
             })
         }
     })
