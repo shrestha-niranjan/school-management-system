@@ -25,8 +25,7 @@ const props = defineProps({
     roles: {
         type: Object,
         default: [{}]
-    },
-    breadcrumbs: Array
+    }
 })
 
 const form = useForm({
@@ -68,10 +67,9 @@ const onSubmit = () => {
     <SectionMain>
         <template #header>
             <div class="flex justify-between items-center rounded">
-                <Breadcrumb
-                    :home="breadcrumbs.home"
-                    :model="breadcrumbs.items"
-                />
+                <h1 class="text-lg font-semibold dark:text-white">
+                    {{ isEdit ? 'Edit' : 'Create' }} a Mark Entry
+                </h1>
 
                 <BaseButton
                     class="bg-red-600 text-white"

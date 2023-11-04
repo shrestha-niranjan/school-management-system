@@ -31,21 +31,6 @@ class MarkEntryController extends Controller
             })
             ->get();
 
-        $data['breadcrumbs'] = [
-            'home' => [
-                'icon' => 'pi pi-home',
-                'to' => '/'
-            ],
-            'items' => [
-                [
-                    'label' => 'User'
-                ],
-                [
-                    'label' => 'Create'
-                ]
-            ]
-        ];
-
         return Inertia::render('MarkEntry/Create', $data);
     }
 

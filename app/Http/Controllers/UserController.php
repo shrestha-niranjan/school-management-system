@@ -12,16 +12,9 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\RoleOptionResource;
 use App\Http\Resources\UserResource;
-use App\Services\BreadcrumbService;
 
 class UserController extends Controller
 {
-    public function __construct(
-        protected BreadcrumbService $breadcrumb
-    ) {
-        /** */
-    }
-
     public function create(): Response
     {
         $data['roles'] = RoleOptionResource::collection(
@@ -29,8 +22,6 @@ class UserController extends Controller
               ->whereNotIn('name', ['Super Admin'])
               ->get(['id', 'name'])
         );
-
-        $data['breadcrumbs'] = $this->breadcrumb->generate();
 
         return Inertia::render('User/Create', $data);
     }
