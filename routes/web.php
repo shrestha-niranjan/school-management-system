@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MarkEntryController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -19,6 +20,7 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('users', UserController::class);
+    Route::resource('mark-entry', MarkEntryController::class);
 
 });
 

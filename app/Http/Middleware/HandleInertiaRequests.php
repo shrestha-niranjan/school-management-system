@@ -48,6 +48,12 @@ class HandleInertiaRequests extends Middleware
                     'icon' => 'mdiAccountGroup',
                     'isVisible' => true,
                 ],
+                [
+                    'label' => 'Mark Entry',
+                    'route' => 'mark-entry.index',
+                    'icon' => 'mdiCashRegister',
+                    'isVisible' => true,
+                ],
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

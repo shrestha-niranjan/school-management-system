@@ -57,13 +57,14 @@ const handleDelete = id => {
         <template #header>
             <div class="flex justify-between items-center rounded">
                 <h1 class="text-lg font-semibold dark:text-white">
-                    Manage Users
+                    Manage Mark Entry
                 </h1>
+
                 <BaseButton
                     class="bg-emerald-600 text-white"
                     label="Create"
                     :icon="mdiPlus"
-                    :routeName="route('users.create')"
+                    :routeName="route('mark-entry.create')"
                 />
             </div>
         </template>
