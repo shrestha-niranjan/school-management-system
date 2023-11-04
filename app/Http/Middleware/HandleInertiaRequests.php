@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\BreadcrumbService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -35,6 +36,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'breadcrumbs' => (new BreadcrumbService)->generate(),
             'menus' => [
                 [
                     'label' => 'Dashboard',

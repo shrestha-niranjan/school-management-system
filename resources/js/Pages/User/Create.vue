@@ -70,7 +70,7 @@ const onSubmit = () => {
         <template #header>
             <div class="flex justify-between items-center rounded">
                 <h1 class="text-lg font-semibold dark:text-white">
-                    User / {{ isEdit ? 'Edit' : 'Create' }}
+                    {{ isEdit ? 'Edit' : 'Create' }} a User
                 </h1>
 
                 <BaseButton

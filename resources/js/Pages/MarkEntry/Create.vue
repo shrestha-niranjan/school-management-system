@@ -1,14 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { useForm } from '@inertiajs/vue3'
-import InputError from '@/Components/InputError.vue'
 import BaseButton from '@/Components/BaseButton.vue'
-import FormControl from '@/Components/FormControl.vue'
 import SectionMain from '@/Components/SectionMain.vue'
-import FormField from '@/Components/FormField.vue'
 import { mdiArrowLeft, mdiStore } from '@mdi/js'
 import Dropdown from 'primevue/dropdown'
 import { useToast } from 'primevue/usetoast'
+
 const toast = useToast()
 
 defineOptions({
@@ -27,7 +25,8 @@ const props = defineProps({
     roles: {
         type: Object,
         default: [{}]
-    }
+    },
+    breadcrumbs: Array
 })
 
 const form = useForm({
@@ -69,9 +68,10 @@ const onSubmit = () => {
     <SectionMain>
         <template #header>
             <div class="flex justify-between items-center rounded">
-                <h1 class="text-lg font-semibold dark:text-white">
-                    User / {{ isEdit ? 'Edit' : 'Create' }}
-                </h1>
+                <Breadcrumb
+                    :home="breadcrumbs.home"
+                    :model="breadcrumbs.items"
+                />
 
                 <BaseButton
                     class="bg-red-600 text-white"

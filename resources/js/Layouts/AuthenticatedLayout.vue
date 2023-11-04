@@ -27,6 +27,18 @@ const onHamClick = () => {
 const toggleDarkMode = () => {
     useStyleStore().setDarkMode()
 }
+
+const home = ref({
+    icon: 'pi pi-home',
+    route: '/'
+})
+const items = ref([
+    { label: 'Computer' },
+    { label: 'Notebook' },
+    { label: 'Accessories' },
+    { label: 'Backpacks' },
+    { label: 'Item' }
+])
 </script>
 
 <template>
@@ -227,6 +239,40 @@ const toggleDarkMode = () => {
                     </div>
                 </div>
                 <main class="min-h-[85vh]">
+                    <div
+                        v-if="$page.props.breadcrumbs.items"
+                        class="w-full mx-auto sm:px-6 lg:px-8 space-y-4 mb-4"
+                    >
+                        <Breadcrumb
+                            :home="$page.props.breadcrumbs.home"
+                            :model="$page.props.breadcrumbs.items"
+                        >
+                            <template #item="{ label, item, props }">
+                                <Link v-if="item.route" :href="item.route">
+                                    <span v-bind="props.icon" />
+                                    <span v-bind="props.label">{{
+                                        label
+                                    }}</span>
+                                </Link>
+
+                                <a
+                                    v-else
+                                    :href="item.url"
+                                    :target="item.target"
+                                    v-bind="props.action"
+                                >
+                                    <span
+                                        v-if="item.icon"
+                                        v-bind="props.icon"
+                                    />
+                                    <span v-bind="props.label">{{
+                                        label
+                                    }}</span>
+                                </a>
+                            </template>
+                        </Breadcrumb>
+                    </div>
+
                     <slot />
                 </main>
                 <footer>

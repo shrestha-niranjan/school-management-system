@@ -2,26 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MarkEntry;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Course;
+use App\Models\MarkEntry;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\StoreMarkEntryRequest;
-use App\Http\Requests\UpdateMarkEntryRequest;
-use App\Http\Resources\RoleOptionResource;
 use App\Http\Resources\MarkEntryResource;
+use App\Http\Resources\RoleOptionResource;
+use App\Http\Requests\StoreMarkEntryRequest;
+use App\Http\Resources\CourseOptionResource;
+use App\Http\Requests\UpdateMarkEntryRequest;
 
 class MarkEntryController extends Controller
 {
     public function create(): Response
     {
-        $data['roles'] = RoleOptionResource::collection(
-            Role::query()
-              ->whereNotIn('name', ['Super Admin'])
+        $data['courses'] = CourseOptionResource::collection(
+            Course::query()
               ->get(['id', 'name'])
         );
+
+        $data['students'] = User::query()
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'Student');
+            })
+            ->get();
+
+        $data['breadcrumbs'] = [
+            'home' => [
+                'icon' => 'pi pi-home',
+                'to' => '/'
+            ],
+            'items' => [
+                [
+                    'label' => 'User'
+                ],
+                [
+                    'label' => 'Create'
+                ]
+            ]
+        ];
 
         return Inertia::render('MarkEntry/Create', $data);
     }

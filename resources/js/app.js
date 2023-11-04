@@ -18,6 +18,7 @@ import ConfirmDialog from 'primevue/confirmdialog'
 import InputText from 'primevue/inputtext'
 import InlineMessage from 'primevue/inlinemessage'
 import Password from 'primevue/password'
+import Breadcrumb from 'primevue/breadcrumb'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 const pinia = createPinia()
@@ -42,6 +43,7 @@ createInertiaApp({
             .component('InputText', InputText)
             .component('InlineMessage', InlineMessage)
             .component('Password', Password)
+            .component('Breadcrumb', Breadcrumb)
             .mount(el)
     },
     progress: {

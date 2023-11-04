@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Grade;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('grades', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignIdFor(Grade::class)
-                ->constrained()
-                ->cascadeOnDelete();
 
             $table->string('name');
 
@@ -29,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('grades');
     }
 };
