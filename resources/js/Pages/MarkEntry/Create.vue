@@ -4,7 +4,6 @@ import { useForm } from '@inertiajs/vue3'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
 import { mdiArrowLeft, mdiStore } from '@mdi/js'
-import Dropdown from 'primevue/dropdown'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -22,25 +21,30 @@ const props = defineProps({
         type: Object,
         default: [{}]
     },
-    roles: {
+    students: {
+        type: Object,
+        default: [{}]
+    },
+    courses: {
         type: Object,
         default: [{}]
     }
 })
 
 const form = useForm({
-    name: props.isEdit && props.item.name ? props.item.name : '',
-    email: props.isEdit && props.item.email ? props.item.email : '',
-    role: props.isEdit && props.item.roles ? props.item.roles[0].name : '',
-    password: props.isEdit && props.item.password ? props.item.password : '',
-    password_confirmation:
-        props.isEdit && props.item.password_confirmation
-            ? props.item.password_confirmation
-            : ''
+    student_id:
+        props.isEdit && props.item.student_id ? props.item.student_id : '',
+    marks: [
+        {
+            course_id: '',
+            external: null,
+            internal: null
+        }
+    ]
 })
 const onSubmit = () => {
     props.isEdit
-        ? form.put(route('users.update', { user: props.item.id }), {
+        ? form.put(route('mark-entry.update', { user: props.item.id }), {
               onSuccess: () => {
                   toast.add({
                       severity: 'success',
@@ -50,7 +54,7 @@ const onSubmit = () => {
                   })
               }
           })
-        : form.post(route('users.store'), {
+        : form.post(route('mark-entry.store'), {
               onSuccess: () => {
                   toast.add({
                       severity: 'success',
@@ -61,6 +65,18 @@ const onSubmit = () => {
               }
           })
 }
+
+const add = () => {
+    form.marks.push({
+        course_id: '',
+        external: null,
+        internal: null
+    })
+}
+
+const remove = index => {
+    form.marks.splice(index, 1)
+}
 </script>
 
 <template>
@@ -70,7 +86,7 @@ const onSubmit = () => {
                 <h1 class="text-lg font-semibold dark:text-white">
                     {{ isEdit ? 'Edit' : 'Create' }} a Mark Entry
                 </h1>
-
+                {{ errors }}
                 <BaseButton
                     class="bg-red-600 text-white"
                     label="Back"
@@ -81,183 +97,150 @@ const onSubmit = () => {
         </template>
         <template #main>
             <form @submit.prevent="onSubmit" class="space-y-2 p-8">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- BEGIN::Name section -->
-                    <div>
-                        <span class="p-float-label">
-                            <InputText
-                                id="name"
-                                v-model="form.name"
-                                class="w-full"
-                                :class="
-                                    form.errors.name &&
-                                    !form.name &&
-                                    'p-invalid'
-                                "
-                            />
-                            <label for="name">Name</label>
-                        </span>
-
-                        <small class="p-error" id="text-error">
-                            {{
-                                (form.errors.name &&
-                                    !form.name &&
-                                    form.errors.name) ||
-                                '&nbsp;'
-                            }}
-                        </small>
-                    </div>
-                    <!-- END::Name section -->
-
-                    <!-- BEGIN::Email section -->
-                    <div>
-                        <span class="p-float-label">
-                            <InputText
-                                id="email"
-                                v-model="form.email"
-                                class="w-full"
-                                :class="
-                                    form.errors.email &&
-                                    !form.email &&
-                                    'p-invalid'
-                                "
-                            />
-                            <label for="email">Email</label>
-                        </span>
-
-                        <small class="p-error" id="text-error">
-                            {{
-                                (form.errors.email &&
-                                    !form.email &&
-                                    form.errors.email) ||
-                                '&nbsp;'
-                            }}
-                        </small>
-                    </div>
-                    <!-- END::Email section -->
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- BEGIN::Password section -->
-                    <div>
-                        <span class="p-float-label">
-                            <Password
-                                id="password"
-                                v-model="form.password"
-                                :class="
-                                    form.errors.password &&
-                                    !form.password &&
-                                    'p-invalid'
-                                "
-                                class="w-full"
-                                toggle-mask
-                            >
-                                <template #header>
-                                    <h6>Pick a password</h6>
-                                </template>
-                                <template #footer>
-                                    <Divider />
-                                    <p class="mt-2">Suggestions</p>
-                                    <ul
-                                        class="pl-2 ml-2 mt-0"
-                                        style="line-height: 1.5"
-                                    >
-                                        <li>At least one lowercase</li>
-                                        <li>At least one uppercase</li>
-                                        <li>At least one numeric</li>
-                                        <li>Minimum 8 characters</li>
-                                    </ul>
-                                </template>
-                            </Password>
-
-                            <label for="password">Password</label>
-                        </span>
-
-                        <small class="p-error" id="text-error">
-                            {{
-                                (form.errors.password &&
-                                    !form.password &&
-                                    form.errors.password) ||
-                                '&nbsp;'
-                            }}
-                        </small>
-                    </div>
-                    <!-- END::Password section -->
-
-                    <!-- BEGIN::Password Confirmation section -->
-                    <div>
-                        <span class="p-float-label">
-                            <Password
-                                id="password_confirmation"
-                                v-model="form.password_confirmation"
-                                class="w-full"
-                                :class="
-                                    form.errors.password_confirmation &&
-                                    !form.password_confirmation &&
-                                    'p-invalid'
-                                "
-                                toggle-mask
-                                promptLabel="Choose a password"
-                                weakLabel="Too simple"
-                                mediumLabel="Average complexity"
-                                strongLabel="Complex password"
-                            >
-                                <template #header>
-                                    <h6>Pick a password</h6>
-                                </template>
-                                <template #footer>
-                                    <Divider />
-                                    <p class="mt-2">Suggestions</p>
-                                    <ul
-                                        class="pl-2 ml-2 mt-0"
-                                        style="line-height: 1.5"
-                                    >
-                                        <li>At least one lowercase</li>
-                                        <li>At least one uppercase</li>
-                                        <li>At least one numeric</li>
-                                        <li>Minimum 8 characters</li>
-                                    </ul>
-                                </template>
-                            </Password>
-                            <label for="password_confirmation">
-                                Password Confirmation
-                            </label>
-                        </span>
-
-                        <small class="p-error" id="text-error">
-                            {{
-                                (form.errors.password_confirmation &&
-                                    form.errors.password_confirmation) ||
-                                '&nbsp;'
-                            }}
-                        </small>
-                    </div>
-                    <!-- END::Password Confirmation section -->
-                </div>
-
-                <div class="grid grid-cols-1">
+                <!-- BEGIN::Student section -->
+                <div>
                     <div class="p-float-label">
                         <Dropdown
-                            v-model="form.role"
-                            :options="roles"
+                            v-model="form.student_id"
+                            :options="students"
                             optionLabel="name"
                             optionValue="id"
-                            placeholder="Select a Role"
+                            placeholder="Select a Student"
                             class="w-full md:w-14rem"
-                            :class="form.errors.role && 'p-invalid'"
+                            filter
+                            :class="form.errors.student_id && 'p-invalid'"
                         />
-                        <label for="dd-city">Select a Role</label>
+
+                        <label for="dd-student">Select a Student</label>
                     </div>
 
                     <small class="p-error" id="text-error">
                         {{
-                            (form.errors.role &&
-                                !form.role &&
-                                form.errors.role) ||
+                            (form.errors.student_id &&
+                                !form.student_id &&
+                                form.errors.student_id) ||
                             '&nbsp;'
                         }}
                     </small>
                 </div>
+                <!-- END::Student section -->
+
+                <!-- BEGIN::Mark Entry -->
+                <div
+                    v-for="(mark, index) in form.marks"
+                    class="grid grid-cols-1 sm:grid-cols-12 gap-4"
+                >
+                    <div class="col-span-4">
+                        <div class="p-float-label">
+                            <Dropdown
+                                v-model="mark.course_id"
+                                :options="courses"
+                                optionLabel="name"
+                                optionValue="id"
+                                placeholder="Select a Course"
+                                class="w-full md:w-14rem"
+                                filter
+                                :class="
+                                    form.errors[
+                                        'marks.' + index + '.course_id'
+                                    ] && 'p-invalid'
+                                "
+                            />
+
+                            <label for="dd-student">Select a Course</label>
+                        </div>
+
+                        <small class="p-error" id="text-error">
+                            {{
+                                form?.errors['marks.' + index + '.course_id'] ||
+                                '&nbsp;'
+                            }}
+                        </small>
+                    </div>
+
+                    <div class="col-span-3">
+                        <span class="p-float-label">
+                            <InputNumber
+                                id="external_marks"
+                                v-model="mark.external"
+                                class="w-full"
+                                :class="
+                                    form.errors[
+                                        'marks.' + index + '.external'
+                                    ] &&
+                                    !mark.external &&
+                                    'p-invalid'
+                                "
+                                :use-grouping="false"
+                                :minFractionDigits="2"
+                                :maxFractionDigits="2"
+                                :min="0"
+                                :max="100"
+                            />
+                            <label for="external_marks">External Marks</label>
+                        </span>
+
+                        <small class="p-error" id="text-error">
+                            {{
+                                form?.errors['marks.' + index + '.external'] ||
+                                '&nbsp;'
+                            }}
+                        </small>
+                    </div>
+
+                    <div class="col-span-3">
+                        <span class="p-float-label">
+                            <InputNumber
+                                id="internal_marks"
+                                v-model="mark.internal"
+                                class="w-full"
+                                :class="
+                                    form.errors[
+                                        'marks.' + index + '.internal'
+                                    ] &&
+                                    !mark.internal &&
+                                    'p-invalid'
+                                "
+                                :use-grouping="false"
+                                :minFractionDigits="2"
+                                :maxFractionDigits="2"
+                                :min="0"
+                                :max="100"
+                            />
+
+                            <label for="internal_marks">Internal Marks</label>
+                        </span>
+
+                        <small class="p-error" id="text-error">
+                            {{
+                                form?.errors['marks.' + index + '.internal'] ||
+                                '&nbsp;'
+                            }}
+                        </small>
+                    </div>
+
+                    <div class="col-span-2 flex justify-around">
+                        <Button
+                            @click="add"
+                            icon="pi pi-plus"
+                            severity="success"
+                            rounded
+                            aria-label="Add"
+                            class="h-10 w-10"
+                        />
+
+                        <Button
+                            v-if="index !== 0"
+                            @click="remove(index)"
+                            icon="pi pi-times"
+                            severity="danger"
+                            rounded
+                            aria-label="Remove"
+                            class="h-10 w-10"
+                        />
+                    </div>
+                </div>
+                <!-- END::Mark Entry -->
 
                 <div class="flex justify-end">
                     <BaseButton

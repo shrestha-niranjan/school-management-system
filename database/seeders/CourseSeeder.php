@@ -21,9 +21,9 @@ class CourseSeeder extends Seeder
         foreach ($this->names() as $name) {
             Course::query()
                 ->firstOrCreate([
-                    'grade_id' => $grade->id
-                ], [
                     'name' => $name
+                ], [
+                    'grade_id' => $grade->id
                 ]);
         }
     }

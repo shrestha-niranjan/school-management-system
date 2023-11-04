@@ -1,13 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { useForm } from '@inertiajs/vue3'
-import InputError from '@/Components/InputError.vue'
 import BaseButton from '@/Components/BaseButton.vue'
-import FormControl from '@/Components/FormControl.vue'
 import SectionMain from '@/Components/SectionMain.vue'
-import FormField from '@/Components/FormField.vue'
 import { mdiArrowLeft, mdiStore } from '@mdi/js'
-import Dropdown from 'primevue/dropdown'
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
 
