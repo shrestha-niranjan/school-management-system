@@ -27,22 +27,12 @@ const onHamClick = () => {
 const toggleDarkMode = () => {
     useStyleStore().setDarkMode()
 }
-
-const home = ref({
-    icon: 'pi pi-home',
-    route: '/'
-})
-const items = ref([
-    { label: 'Computer' },
-    { label: 'Notebook' },
-    { label: 'Accessories' },
-    { label: 'Backpacks' },
-    { label: 'Item' }
-])
 </script>
 
 <template>
     <Toast />
+
+    <ConfirmDialog></ConfirmDialog>
 
     <div :class="['w-full h-screen', { dark: !useStyleStore().darkMode }]">
         <div

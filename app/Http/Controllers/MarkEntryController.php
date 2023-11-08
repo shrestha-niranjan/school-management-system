@@ -38,7 +38,7 @@ class MarkEntryController extends Controller
     {
         $user->delete();
 
-        return to_route('users.index');
+        return to_route('mark-entry.index');
     }
 
     public function edit(MarkEntry $user): Response
@@ -61,23 +61,20 @@ class MarkEntryController extends Controller
     {
         $paginationCount = $request->input('pagination_count', config('app.pagination'));
 
-        $data['items'] = MarkEntryResource::collection(
-            MarkEntry::query()
-                ->latest()
-                ->paginate($paginationCount)
-                ->withQueryString()
-        );
+        $data['items'] = User::query()
+            ->with('markEntries')
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'Student');
+            })
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'student_name' => $user->name,
+                ];
+            });
 
-        $data['columns'] = [
-            [
-                'header' => 'Name',
-                'field' => 'name'
-            ],
-            [
-                'header' => 'Email',
-                'field' => 'email'
-            ],
-        ];
+        $data['courses'] = Course::query()
+            ->pluck('name', 'id');
 
         return
             Inertia::render(
@@ -90,13 +87,17 @@ class MarkEntryController extends Controller
     {
         $data = $request->validated();
 
-        MarkEntry::query()
-            ->create($data)
-            ->assignRole(
-                $data['role']
-            );
+        foreach ($data['marks'] as $markEntry) {
+            MarkEntry::query()
+                ->create([
+                    'user_id' => $data['student_id'],
+                    'course_id' => $markEntry['course_id'],
+                    'external' => $markEntry['external'],
+                    'internal' => $markEntry['internal']
+                ]);
+        }
 
-        return to_route('users.index');
+        return to_route('mark-entry.index');
     }
 
     public function update(UpdateMarkEntryRequest $request, MarkEntry $user): RedirectResponse
@@ -111,6 +112,6 @@ class MarkEntryController extends Controller
 
         $user->syncRoles($data['role']);
 
-        return to_route('users.index');
+        return to_route('mark-entry.index');
     }
 }

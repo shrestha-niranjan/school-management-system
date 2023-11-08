@@ -22,6 +22,10 @@ import Breadcrumb from 'primevue/breadcrumb'
 import Dropdown from 'primevue/dropdown'
 import InputNumber from 'primevue/inputnumber'
 import Button from 'primevue/button'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import ColumnGroup from 'primevue/columngroup'
+import Row from 'primevue/row'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 const pinia = createPinia()
@@ -50,6 +54,10 @@ createInertiaApp({
             .component('Dropdown', Dropdown)
             .component('InputNumber', InputNumber)
             .component('Button', Button)
+            .component('DataTable', DataTable)
+            .component('Column', Column)
+            .component('ColumnGroup', ColumnGroup)
+            .component('Row', Row)
             .mount(el)
     },
     progress: {

@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\RoleOptionResource;
-use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -85,7 +86,11 @@ class UserController extends Controller
         $data = $request->validated();
 
         User::query()
-            ->create($data)
+            ->create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password'])
+            ])
             ->assignRole(
                 $data['role']
             );

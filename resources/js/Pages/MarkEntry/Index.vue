@@ -5,8 +5,6 @@ import { router } from '@inertiajs/vue3'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
 import Tag from 'primevue/tag'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
 import Button from 'primevue/button'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
@@ -22,7 +20,7 @@ defineProps({
     items: {
         type: Object
     },
-    columns: Array
+    courses: Object
 })
 
 const handleEdit = id => {
@@ -51,8 +49,6 @@ const handleDelete = id => {
 </script>
 
 <template>
-    <ConfirmDialog></ConfirmDialog>
-
     <SectionMain>
         <template #header>
             <div class="flex justify-between items-center rounded">
@@ -70,33 +66,51 @@ const handleDelete = id => {
         </template>
         <template #main>
             <DataTable
-                :value="items.data"
-                :rows="items.meta.per_page"
-                paginator
+                :value="items"
                 tableStyle="min-width: 50rem"
+                class="p-datatable-sm"
             >
+                <ColumnGroup type="header">
+                    <Row>
+                        <Column header="#" :rowspan="3" />
+                        <Column header="Student Name" :rowspan="3" />
+                        <Column
+                            v-for="(course, index) in courses"
+                            :colspan="3"
+                            :header="course"
+                            :key="index"
+                        />
+                    </Row>
+
+                    <Row>
+                        <template v-for="course in courses">
+                            <Column header="External" field="external"></Column>
+                            <Column header="Internal" field="internal"></Column>
+                            <Column header="Total" field="total"></Column>
+                        </template>
+                    </Row>
+
+                    <Row>
+                        <Column header="75"></Column>
+                        <Column header="25" field="internal"></Column>
+                        <Column header="100" field="total"></Column>
+                    </Row>
+                </ColumnGroup>
+
                 <Column header="#" headerStyle="width:3rem">
                     <template #body="slotProps">
                         {{ slotProps.index + 1 }}
                     </template>
                 </Column>
 
-                <Column
-                    v-for="(column, index) in columns"
-                    :field="column.field"
-                    :header="column.header"
-                />
-
-                <Column field="role" header="Role" style="min-width: 100px">
+                <Column field="student_name" />
+                <Column>
                     <template #body="slotProps">
-                        <Tag
-                            :value="slotProps.data.role"
-                            :severity="'success'"
-                        />
+                        {{ slotProps.data.markEntries }}
                     </template>
                 </Column>
 
-                <Column :exportable="false" style="min-width: 8rem">
+                <!-- <Column :exportable="false" style="min-width: 8rem">
                     <template #body="slotProps">
                         <Button
                             icon="pi pi-pencil"
@@ -115,7 +129,7 @@ const handleDelete = id => {
                             @click="handleDelete(slotProps.data)"
                         />
                     </template>
-                </Column>
+                </Column> -->
             </DataTable>
         </template>
     </SectionMain>

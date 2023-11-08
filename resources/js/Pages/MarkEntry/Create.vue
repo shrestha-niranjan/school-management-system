@@ -96,7 +96,7 @@ const remove = index => {
             </div>
         </template>
         <template #main>
-            <form @submit.prevent="onSubmit" class="space-y-2 p-8">
+            <form @submit.prevent="onSubmit" class="space-y-4 p-8">
                 <!-- BEGIN::Student section -->
                 <div>
                     <div class="p-float-label">
@@ -108,7 +108,11 @@ const remove = index => {
                             placeholder="Select a Student"
                             class="w-full md:w-14rem"
                             filter
-                            :class="form.errors.student_id && 'p-invalid'"
+                            :class="
+                                form.errors.student_id &&
+                                !form.student_id &&
+                                'p-invalid'
+                            "
                         />
 
                         <label for="dd-student">Select a Student</label>
@@ -143,7 +147,9 @@ const remove = index => {
                                 :class="
                                     form.errors[
                                         'marks.' + index + '.course_id'
-                                    ] && 'p-invalid'
+                                    ] &&
+                                    !mark.course_id &&
+                                    'p-invalid'
                                 "
                             />
 
@@ -152,7 +158,13 @@ const remove = index => {
 
                         <small class="p-error" id="text-error">
                             {{
-                                form?.errors['marks.' + index + '.course_id'] ||
+                                (form?.errors[
+                                    'marks.' + index + '.course_id'
+                                ] &&
+                                    !mark.course_id &&
+                                    form?.errors[
+                                        'marks.' + index + '.course_id'
+                                    ]) ||
                                 '&nbsp;'
                             }}
                         </small>
@@ -182,7 +194,11 @@ const remove = index => {
 
                         <small class="p-error" id="text-error">
                             {{
-                                form?.errors['marks.' + index + '.external'] ||
+                                (form?.errors['marks.' + index + '.external'] &&
+                                    !mark.external &&
+                                    form?.errors[
+                                        'marks.' + index + '.external'
+                                    ]) ||
                                 '&nbsp;'
                             }}
                         </small>
@@ -213,7 +229,11 @@ const remove = index => {
 
                         <small class="p-error" id="text-error">
                             {{
-                                form?.errors['marks.' + index + '.internal'] ||
+                                (form.errors['marks.' + index + '.internal'] &&
+                                    !mark.internal &&
+                                    form.errors[
+                                        'marks.' + index + '.internal'
+                                    ]) ||
                                 '&nbsp;'
                             }}
                         </small>
