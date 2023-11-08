@@ -3,8 +3,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { useForm } from '@inertiajs/vue3'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
-import { mdiArrowLeft, mdiStore } from '@mdi/js'
+import { mdiArrowLeft, mdiContentSavePlus } from '@mdi/js'
 import { useToast } from 'primevue/usetoast'
+import { computed } from 'vue'
 const toast = useToast()
 
 defineOptions({
@@ -23,13 +24,15 @@ const props = defineProps({
     roles: {
         type: Object,
         default: [{}]
-    }
+    },
+    grades: Object
 })
 
 const form = useForm({
     name: props.isEdit && props.item.name ? props.item.name : '',
     email: props.isEdit && props.item.email ? props.item.email : '',
-    role: props.isEdit && props.item.roles ? props.item.roles[0].name : '',
+    role: props.isEdit && props.item.roles ? props.item.roles[0].id : '',
+    grade: props.isEdit && props.item.grade_id ? props.item.grade_id : '',
     password: props.isEdit && props.item.password ? props.item.password : '',
     password_confirmation:
         props.isEdit && props.item.password_confirmation
@@ -59,6 +62,10 @@ const onSubmit = () => {
               }
           })
 }
+
+const studentId = computed(() => {
+    return props.roles.find(({ name }) => name === 'Student').id
+})
 </script>
 
 <template>
@@ -234,34 +241,60 @@ const onSubmit = () => {
                 </div>
 
                 <div class="grid grid-cols-1">
-                    <div class="p-float-label">
-                        <Dropdown
-                            v-model="form.role"
-                            :options="roles"
-                            optionLabel="name"
-                            optionValue="id"
-                            placeholder="Select a Role"
-                            class="w-full md:w-14rem"
-                            :class="form.errors.role && 'p-invalid'"
-                        />
-                        <label for="dd-city">Select a Role</label>
+                    <div class="mb-2">
+                        <div class="p-float-label">
+                            <Dropdown
+                                v-model="form.role"
+                                :options="roles"
+                                optionLabel="name"
+                                optionValue="id"
+                                placeholder="Select a Role"
+                                class="w-full md:w-14rem"
+                                :class="form.errors.role && 'p-invalid'"
+                            />
+                            <label for="dd-city">Select a Role</label>
+                        </div>
+
+                        <small class="p-error" id="text-error">
+                            {{
+                                (form.errors.role &&
+                                    !form.role &&
+                                    form.errors.role) ||
+                                '&nbsp;'
+                            }}
+                        </small>
                     </div>
 
-                    <small class="p-error" id="text-error">
-                        {{
-                            (form.errors.role &&
-                                !form.role &&
-                                form.errors.role) ||
-                            '&nbsp;'
-                        }}
-                    </small>
+                    <div v-if="form.role === studentId">
+                        <div class="p-float-label">
+                            <Dropdown
+                                v-model="form.grade"
+                                :options="grades"
+                                optionLabel="name"
+                                optionValue="id"
+                                placeholder="Select a Grade"
+                                class="w-full md:w-14rem"
+                                :class="form.errors.grade && 'p-invalid'"
+                            />
+                            <label for="dd-city">Select a Grade</label>
+                        </div>
+
+                        <small class="p-error" id="text-error">
+                            {{
+                                (form.errors.grade &&
+                                    !form.grade &&
+                                    form.errors.grade) ||
+                                '&nbsp;'
+                            }}
+                        </small>
+                    </div>
                 </div>
 
                 <div class="flex justify-end">
                     <BaseButton
                         class="bg-sky-600 text-white"
                         label="Save"
-                        :icon="mdiStore"
+                        :icon="mdiContentSavePlus"
                         type="submit"
                     />
                 </div>

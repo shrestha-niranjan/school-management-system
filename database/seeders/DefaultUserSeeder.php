@@ -20,7 +20,10 @@ class DefaultUserSeeder extends Seeder
 
         foreach ($this->users() as $email => $userInfo) {
             $user = User::firstOrCreate(
-                ['email' => $email],
+                [
+                    'email' => $email,
+                    'grade_id' => 10
+                ],
                 [
                     'password' => $userInfo['password'],
                     'name' => $userInfo['name']

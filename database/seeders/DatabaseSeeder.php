@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
 
         $this
             ->call([
-                DefaultUserSeeder::class,
                 GradeSeeder::class,
+                DefaultUserSeeder::class,
                 CourseSeeder::class
             ]);
     }

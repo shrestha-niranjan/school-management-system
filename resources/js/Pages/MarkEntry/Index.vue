@@ -4,8 +4,6 @@ import { mdiPlus } from '@mdi/js'
 import { router } from '@inertiajs/vue3'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
-import Tag from 'primevue/tag'
-import Button from 'primevue/button'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
 

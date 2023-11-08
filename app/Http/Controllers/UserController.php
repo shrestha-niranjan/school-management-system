@@ -12,12 +12,18 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\GradeOptionResource;
 use App\Http\Resources\RoleOptionResource;
+use App\Models\Grade;
 
 class UserController extends Controller
 {
     public function create(): Response
     {
+        $data['grades'] = GradeOptionResource::collection(
+            Grade::all()
+        );
+
         $data['roles'] = RoleOptionResource::collection(
             Role::query()
               ->whereNotIn('name', ['Super Admin'])
@@ -37,6 +43,10 @@ class UserController extends Controller
     public function edit(User $user): Response
     {
         $user->load(['roles:roles.id,roles.name']);
+
+        $data['grades'] = GradeOptionResource::collection(
+            Grade::all()
+        );
 
         $data['isEdit'] = true;
         $data['item'] = $user;
@@ -89,7 +99,8 @@ class UserController extends Controller
             ->create([
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'password' => Hash::make($data['password'])
+                'password' => Hash::make($data['password']),
+                'grade_id' => $data['grade']
             ])
             ->assignRole(
                 $data['role']
@@ -102,11 +113,12 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        if (is_null($data['password'])) {
-            unset($data['password']);
-        }
-
-        $user->update($data);
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'grade_id' => $data['grade'],
+            'password' => Hash::make($data['password'])
+        ]);
 
         $user->syncRoles($data['role']);
 

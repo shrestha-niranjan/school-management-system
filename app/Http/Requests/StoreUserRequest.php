@@ -26,7 +26,8 @@ class StoreUserRequest extends FormRequest
             'email' => 'required',
             'role' => 'required',
             'password' => 'min:4',
-            'password_confirmation' => 'same:password'
+            'password_confirmation' => 'same:password',
+            'grade' => 'nullable'
         ];
     }
 }
