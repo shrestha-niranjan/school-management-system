@@ -17,7 +17,7 @@ defineOptions({
 })
 
 defineProps({
-    items: {
+    students: {
         type: Object
     },
     courses: Object
@@ -65,72 +65,44 @@ const handleDelete = id => {
             </div>
         </template>
         <template #main>
-            <DataTable
-                :value="items"
-                tableStyle="min-width: 50rem"
-                class="p-datatable-sm"
-            >
-                <ColumnGroup type="header">
-                    <Row>
-                        <Column header="#" :rowspan="3" />
-                        <Column header="Student Name" :rowspan="3" />
-                        <Column
-                            v-for="(course, index) in courses"
-                            :colspan="3"
-                            :header="course"
-                            :key="index"
-                        />
-                    </Row>
+            <div class="w-full max-w-screen-xl mx-auto p-4">
+                <div class="overflow-x-auto">
+                    <table class="w-full border border-collapse text-sm">
+                        <thead>
+                            <tr>
+                                <th class="border p-2" rowspan="3">SN</th>
+                                <th class="border p-2" rowspan="3">
+                                    Student Name
+                                </th>
+                                <template v-for="course in courses">
+                                    <th class="border p-2" colspan="3">
+                                        {{ course }}
+                                    </th>
+                                </template>
+                            </tr>
+                            <tr>
+                                <template v-for="course in courses">
+                                    <th class="border p-2">Internal</th>
+                                    <th class="border p-2">External</th>
+                                    <th class="border p-2">Total</th>
+                                </template>
+                            </tr>
+                        </thead>
 
-                    <Row>
-                        <template v-for="course in courses">
-                            <Column header="External" field="external"></Column>
-                            <Column header="Internal" field="internal"></Column>
-                            <Column header="Total" field="total"></Column>
-                        </template>
-                    </Row>
-
-                    <Row>
-                        <Column header="75"></Column>
-                        <Column header="25" field="internal"></Column>
-                        <Column header="100" field="total"></Column>
-                    </Row>
-                </ColumnGroup>
-
-                <Column header="#" headerStyle="width:3rem">
-                    <template #body="slotProps">
-                        {{ slotProps.index + 1 }}
-                    </template>
-                </Column>
-
-                <Column field="student_name" />
-                <Column>
-                    <template #body="slotProps">
-                        {{ slotProps.data.markEntries }}
-                    </template>
-                </Column>
-
-                <!-- <Column :exportable="false" style="min-width: 8rem">
-                    <template #body="slotProps">
-                        <Button
-                            icon="pi pi-pencil"
-                            outlined
-                            rounded
-                            class="mr-2 border border-green-500 h-10 w-10 text-green-500"
-                            @click="handleEdit(slotProps.data.id)"
-                        />
-
-                        <Button
-                            icon="pi pi-trash"
-                            outlined
-                            rounded
-                            severity="danger"
-                            class="border border-red-500 h-10 w-10 text-red-500"
-                            @click="handleDelete(slotProps.data)"
-                        />
-                    </template>
-                </Column> -->
-            </DataTable>
+                        <tbody>
+                            <tr v-for="student in students">
+                                <td>1</td>
+                                <td>Niranjan</td>
+                                <template v-for="course in courses">
+                                    <td>10</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                </template>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </template>
     </SectionMain>
 </template>

@@ -61,17 +61,13 @@ class MarkEntryController extends Controller
     {
         $paginationCount = $request->input('pagination_count', config('app.pagination'));
 
-        $data['items'] = User::query()
-            ->with('markEntries')
+        $data['students'] = User::query()
+            ->with('courses.markEntries')
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'Student');
             })
             ->get()
-            ->map(function ($user) {
-                return [
-                    'student_name' => $user->name,
-                ];
-            });
+        ;
 
         $data['courses'] = Course::query()
             ->pluck('name', 'id');

@@ -5,6 +5,7 @@ import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
 import { mdiArrowLeft, mdiStore } from '@mdi/js'
 import { useToast } from 'primevue/usetoast'
+import { onMounted } from 'vue'
 
 const toast = useToast()
 
@@ -34,14 +35,19 @@ const props = defineProps({
 const form = useForm({
     student_id:
         props.isEdit && props.item.student_id ? props.item.student_id : '',
-    marks: [
-        {
-            course_id: '',
+    marks: []
+})
+
+onMounted(() => {
+    props.courses.forEach(course => {
+        form.marks.push({
+            course_id: course.id,
             external: null,
             internal: null
-        }
-    ]
+        })
+    })
 })
+
 const onSubmit = () => {
     props.isEdit
         ? form.put(route('mark-entry.update', { user: props.item.id }), {
@@ -134,9 +140,10 @@ const remove = index => {
                     v-for="(mark, index) in form.marks"
                     class="grid grid-cols-1 sm:grid-cols-12 gap-4"
                 >
-                    <div class="col-span-4">
+                    <div class="col-span-6">
                         <div class="p-float-label">
                             <Dropdown
+                                disabled
                                 v-model="mark.course_id"
                                 :options="courses"
                                 optionLabel="name"
@@ -153,7 +160,7 @@ const remove = index => {
                                 "
                             />
 
-                            <label for="dd-student">Select a Course</label>
+                            <label for="dd-student">Course</label>
                         </div>
 
                         <small class="p-error" id="text-error">
@@ -239,7 +246,7 @@ const remove = index => {
                         </small>
                     </div>
 
-                    <div class="col-span-2 flex justify-around">
+                    <!-- <div class="col-span-2 flex justify-around">
                         <Button
                             @click="add"
                             icon="pi pi-plus"
@@ -258,7 +265,7 @@ const remove = index => {
                             aria-label="Remove"
                             class="h-10 w-10"
                         />
-                    </div>
+                    </div> -->
                 </div>
                 <!-- END::Mark Entry -->
 
