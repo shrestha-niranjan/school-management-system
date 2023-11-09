@@ -59,16 +59,36 @@ class MarkEntryController extends Controller
 
     public function index(Request $request): Response
     {
-        $data['students'] = User::query()
-            ->with('markEntries')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'Student');
-            })
-            ->get()
-        ;
+        // $data['students'] = User::query()
+        //     ->with('markEntries')
+        //     ->whereHas('roles', function ($query) {
+        //         $query->where('name', 'Student');
+        //     })
+        //     ->get()
+        // ;
 
-        $data['courses'] = Course::query()
-            ->pluck('name', 'id');
+        // $data['courses'] = Course::query()
+        //     ->pluck('name', 'id');
+
+        $data['items'] =  MarkEntryResource::collection(
+            User::query()
+                ->whereHas('markEntries')
+                ->whereHas('roles', function ($query) {
+                    $query->where('name', 'Student');
+                })
+                ->paginate()
+        );
+
+        $data['columns'] =  [
+            [
+                'header' => 'Student',
+                'field' => 'student'
+            ],
+            [
+                'header' => 'Grade',
+                'field' => 'grade'
+            ],
+        ];
 
         return
             Inertia::render(

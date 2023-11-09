@@ -15,10 +15,10 @@ defineOptions({
 })
 
 defineProps({
-    students: {
+    items: {
         type: Object
     },
-    courses: Object
+    columns: Array
 })
 
 const handleEdit = id => {
@@ -51,7 +51,7 @@ const handleDelete = id => {
         <template #header>
             <div class="flex justify-between items-center rounded">
                 <h1 class="text-lg font-semibold dark:text-white">
-                    Manage Mark Entry
+                    Mark Entries List
                 </h1>
 
                 <BaseButton
@@ -64,7 +64,47 @@ const handleDelete = id => {
         </template>
 
         <template #main>
-            <div class="w-full max-w-screen-xl mx-auto p-4">
+            <DataTable
+                :value="items.data"
+                :rows="items.meta.per_page"
+                paginator
+                tableStyle="min-width: 50rem"
+            >
+                <Column header="#" headerStyle="width:3rem">
+                    <template #body="slotProps">
+                        {{ slotProps.index + 1 }}
+                    </template>
+                </Column>
+
+                <Column
+                    v-for="(column, index) in columns"
+                    :field="column.field"
+                    :header="column.header"
+                />
+
+                <Column :exportable="false" style="min-width: 8rem">
+                    <template #body="slotProps">
+                        <Button
+                            icon="pi pi-pencil"
+                            outlined
+                            rounded
+                            class="mr-2 border border-green-500 h-10 w-10 text-green-500"
+                            @click="handleEdit(slotProps.data.id)"
+                        />
+
+                        <Button
+                            icon="pi pi-trash"
+                            outlined
+                            rounded
+                            severity="danger"
+                            class="border border-red-500 h-10 w-10 text-red-500"
+                            @click="handleDelete(slotProps.data)"
+                        />
+                    </template>
+                </Column>
+            </DataTable>
+
+            <!-- <div class="w-full max-w-screen-xl mx-auto p-4">
                 <div class="overflow-x-auto">
                     <table class="w-full border border-collapse text-sm">
                         <thead>
@@ -174,7 +214,7 @@ const handleDelete = id => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> -->
         </template>
     </SectionMain>
 </template>
