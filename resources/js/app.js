@@ -26,6 +26,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import ColumnGroup from 'primevue/columngroup'
 import Row from 'primevue/row'
+import FocusTrap from 'primevue/focustrap'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 const pinia = createPinia()
@@ -58,6 +59,7 @@ createInertiaApp({
             .component('Column', Column)
             .component('ColumnGroup', ColumnGroup)
             .component('Row', Row)
+            .directive('focustrap', FocusTrap)
             .mount(el)
     },
     progress: {

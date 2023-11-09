@@ -180,9 +180,15 @@ const toggleDarkMode = () => {
                                 </template>
 
                                 <template #content>
-                                    <!-- <DropdownLink :href="route('profile.edit')">
+                                    <DropdownLink :href="route('profile.edit')">
                                         Profile
-                                    </DropdownLink> -->
+                                    </DropdownLink>
+
+                                    <DropdownLink
+                                        :href="route('settings.edit')"
+                                    >
+                                        Settings
+                                    </DropdownLink>
 
                                     <DropdownLink
                                         :href="route('logout')"

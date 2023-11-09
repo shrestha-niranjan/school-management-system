@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use App\Services\BreadcrumbService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -35,6 +36,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'schoolSetting' => school_setting()
             ],
             'breadcrumbs' => (new BreadcrumbService)->generate(),
             'menus' => [
