@@ -13,8 +13,8 @@ return new class extends Migration {
     {
         Schema::table('users', function (Blueprint $table) {
             $table->foreignIdFor(Grade::class)
-                ->after('name')
                 ->nullable()
+                ->after('name')
                 ->constrained()
                 ->cascadeOnDelete();
         });

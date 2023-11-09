@@ -59,10 +59,8 @@ class MarkEntryController extends Controller
 
     public function index(Request $request): Response
     {
-        $paginationCount = $request->input('pagination_count', config('app.pagination'));
-
         $data['students'] = User::query()
-            ->with('courses.markEntries')
+            ->with('markEntries')
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'Student');
             })

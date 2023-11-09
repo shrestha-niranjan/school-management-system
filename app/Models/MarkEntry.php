@@ -10,6 +10,8 @@ class MarkEntry extends Model
 {
     use HasFactory;
 
+    protected $appends = ['total'];
+
     /**
      * Get the user that owns the MarkEntry
      *
@@ -28,5 +30,10 @@ class MarkEntry extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->internal + $this->external;
     }
 }
