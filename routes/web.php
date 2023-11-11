@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MarkEntryController;
+use App\Http\Controllers\MarkLedgerController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -38,6 +39,10 @@ Route::middleware('auth')->group(function () {
     Route::get('mark-entry/{student}', [MarkEntryController::class, 'edit'])->name('mark-entry.edit');
     Route::put('mark-entry/{student}', [MarkEntryController::class, 'update'])->name('mark-entry.update');
 
+    Route::group(['prefix' => 'mark-ledger', 'as' => 'mark-ledger.'], function () {
+        Route::get('/', [MarkLedgerController::class, 'index'])->name('index');
+
+    });
 });
 
 require __DIR__.'/auth.php';
