@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { useForm } from '@inertiajs/vue3'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
-import { mdiArrowLeft, mdiStore } from '@mdi/js'
+import { mdiArrowLeft, mdiContentSavePlus } from '@mdi/js'
 import { useToast } from 'primevue/usetoast'
 import { onMounted } from 'vue'
 
@@ -33,29 +33,30 @@ const props = defineProps({
 })
 
 const form = useForm({
-    student_id:
-        props.isEdit && props.item.student_id ? props.item.student_id : '',
-    marks: []
+    student_id: props.isEdit && props.item.id ? props.item.id : '',
+    marks:
+        props.isEdit && props.item.mark_entries ? props.item.mark_entries : []
 })
 
 onMounted(() => {
-    props.courses.forEach(course => {
-        form.marks.push({
-            course_id: course.id,
-            external: null,
-            internal: null
+    !props.isEdit &&
+        props.courses.forEach(course => {
+            form.marks.push({
+                course_id: course.id,
+                external: null,
+                internal: null
+            })
         })
-    })
 })
 
 const onSubmit = () => {
     props.isEdit
-        ? form.put(route('mark-entry.update', { user: props.item.id }), {
+        ? form.put(route('mark-entry.update', { student: props.item.id }), {
               onSuccess: () => {
                   toast.add({
                       severity: 'success',
                       summary: 'Success',
-                      detail: 'User updated successfully.',
+                      detail: 'Mark entry updated successfully.',
                       life: 3000
                   })
               }
@@ -65,7 +66,7 @@ const onSubmit = () => {
                   toast.add({
                       severity: 'success',
                       summary: 'Success',
-                      detail: 'User created successfully.',
+                      detail: 'Mark entry created successfully.',
                       life: 3000
                   })
               }
@@ -92,7 +93,7 @@ const remove = index => {
                 <h1 class="text-lg font-semibold dark:text-white">
                     {{ isEdit ? 'Edit' : 'Create' }} a Mark Entry
                 </h1>
-                {{ errors }}
+
                 <BaseButton
                     class="bg-red-600 text-white"
                     label="Back"
@@ -107,6 +108,7 @@ const remove = index => {
                 <div>
                     <div class="p-float-label">
                         <Dropdown
+                            :disabled="isEdit"
                             v-model="form.student_id"
                             :options="students"
                             optionLabel="name"
@@ -273,7 +275,7 @@ const remove = index => {
                     <BaseButton
                         class="bg-sky-600 text-white"
                         label="Save"
-                        :icon="mdiStore"
+                        :icon="mdiContentSavePlus"
                         type="submit"
                     />
                 </div>

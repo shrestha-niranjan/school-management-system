@@ -31,7 +31,12 @@ Route::middleware('auth')->group(function () {
     ;
 
     Route::resource('users', UserController::class);
-    Route::resource('mark-entry', MarkEntryController::class);
+
+    Route::get('mark-entry', [MarkEntryController::class, 'index'])->name('mark-entry.index');
+    Route::post('mark-entry', [MarkEntryController::class, 'store'])->name('mark-entry.store');
+    Route::get('mark-entry/create', [MarkEntryController::class, 'create'])->name('mark-entry.create');
+    Route::get('mark-entry/{student}', [MarkEntryController::class, 'edit'])->name('mark-entry.edit');
+    Route::put('mark-entry/{student}', [MarkEntryController::class, 'update'])->name('mark-entry.update');
 
 });
 

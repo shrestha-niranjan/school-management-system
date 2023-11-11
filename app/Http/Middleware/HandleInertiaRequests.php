@@ -53,7 +53,19 @@ class HandleInertiaRequests extends Middleware
                     'isVisible' => true,
                 ],
                 [
-                    'label' => 'Mark Entry',
+                    'label' => 'Marks Entry',
+                    'route' => 'mark-entry.index',
+                    'icon' => 'mdiCashRegister',
+                    'isVisible' => true,
+                ],
+                [
+                    'label' => 'Marks Ledger',
+                    'route' => 'mark-entry.index',
+                    'icon' => 'mdiCashRegister',
+                    'isVisible' => true,
+                ],
+                [
+                    'label' => 'Grade Ledger',
                     'route' => 'mark-entry.index',
                     'icon' => 'mdiCashRegister',
                     'isVisible' => true,

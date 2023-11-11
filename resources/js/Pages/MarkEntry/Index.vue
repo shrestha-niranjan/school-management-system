@@ -22,7 +22,7 @@ defineProps({
 })
 
 const handleEdit = id => {
-    router.get(route('users.edit', { user: id }))
+    router.get(route('mark-entry.edit', { student: id }))
 }
 
 const handleDelete = id => {
@@ -31,12 +31,12 @@ const handleDelete = id => {
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-            router.delete(route('users.destroy', { user: id }), {
+            router.delete(route('mark-entry.destroy', { student: id }), {
                 onSuccess: () => {
                     toast.add({
                         severity: 'info',
                         summary: 'Confirmed',
-                        detail: 'User deleted successfully :)',
+                        detail: 'Mark entry deleted successfully :)',
                         life: 3000
                     })
                 }
@@ -86,19 +86,29 @@ const handleDelete = id => {
                     <template #body="slotProps">
                         <Button
                             icon="pi pi-pencil"
-                            outlined
                             rounded
-                            class="mr-2 border border-green-500 h-10 w-10 text-green-500"
+                            class="mr-2 h-10 w-10"
+                            severity="secondary"
                             @click="handleEdit(slotProps.data.id)"
+                            v-tooltip.bottom="'Edit'"
                         />
 
-                        <Button
+                        <!-- <Button
                             icon="pi pi-trash"
                             outlined
                             rounded
                             severity="danger"
                             class="border border-red-500 h-10 w-10 text-red-500"
                             @click="handleDelete(slotProps.data)"
+                        /> -->
+
+                        <Button
+                            icon="pi pi-file-export"
+                            rounded
+                            severity="warning"
+                            class="h-10 w-10"
+                            @click="handleEdit(slotProps.data.id)"
+                            v-tooltip.bottom="'Generate Marksheet'"
                         />
                     </template>
                 </Column>

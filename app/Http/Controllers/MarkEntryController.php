@@ -8,10 +8,8 @@ use Inertia\Response;
 use App\Models\Course;
 use App\Models\MarkEntry;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\MarkEntryResource;
-use App\Http\Resources\RoleOptionResource;
 use App\Http\Requests\StoreMarkEntryRequest;
 use App\Http\Resources\CourseOptionResource;
 use App\Http\Requests\UpdateMarkEntryRequest;
@@ -41,18 +39,23 @@ class MarkEntryController extends Controller
         return to_route('mark-entry.index');
     }
 
-    public function edit(MarkEntry $user): Response
+    public function edit(User $student): Response
     {
-        $user->load(['roles:roles.id,roles.name']);
-
         $data['isEdit'] = true;
-        $data['item'] = $user;
+        $data['item'] = $student;
 
-        $data['roles'] = RoleOptionResource::collection(
-            Role::query()
-              ->whereNotIn('name', ['Super Admin'])
+        $student->load('markEntries');
+
+        $data['courses'] = CourseOptionResource::collection(
+            Course::query()
               ->get(['id', 'name'])
         );
+
+        $data['students'] = User::query()
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'Student');
+            })
+            ->get();
 
         return Inertia::render('MarkEntry/Create', $data);
     }
@@ -114,17 +117,16 @@ class MarkEntryController extends Controller
         return to_route('mark-entry.index');
     }
 
-    public function update(UpdateMarkEntryRequest $request, MarkEntry $user): RedirectResponse
+    public function update(UpdateMarkEntryRequest $request, User $student): RedirectResponse
     {
         $data = $request->validated();
 
-        if (is_null($data['password'])) {
-            unset($data['password']);
+        foreach ($data['marks'] as $mark) {
+            $student->markEntries()->where('course_id', $mark['course_id'])->update([
+                'external' => $mark['external'],
+                'internal' => $mark['internal']
+            ]);
         }
-
-        $user->update($data);
-
-        $user->syncRoles($data['role']);
 
         return to_route('mark-entry.index');
     }

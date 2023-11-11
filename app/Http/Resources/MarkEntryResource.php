@@ -15,6 +15,7 @@ class MarkEntryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'student' => $this->name,
             'grade' => $this->grade->name
         ];
