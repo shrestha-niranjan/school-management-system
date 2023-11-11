@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 use App\Console\Commands\RefreshPermissionsCommand;
+use App\Models\SchoolSetting;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this
             ->call([
+                SchoolSettingSeeder::class,
                 GradeSeeder::class,
                 DefaultUserSeeder::class,
                 CourseSeeder::class
