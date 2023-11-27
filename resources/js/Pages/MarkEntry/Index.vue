@@ -52,6 +52,44 @@ const handleDelete = id => {
         }
     })
 }
+
+const handlePrintBtn = () => {
+    const prtHtml = document.getElementById('progressReport').innerHTML
+
+    let stylesHtml = ''
+    for (const node of [
+        ...document.querySelectorAll('link[rel="stylesheet"], style')
+    ]) {
+        stylesHtml += node.outerHTML
+    }
+
+    const WinPrint = window.open(
+        '',
+        '',
+        'left=300,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0'
+    )
+
+    WinPrint.document.write(`<!DOCTYPE html>
+        <html>
+        <head>
+            ${stylesHtml}
+            <style>
+            @page { size: auto;  margin: 0mm; }
+            body  {
+                padding: 5rem 1rem;
+            }
+            </style>
+        </head>
+        <body>
+            ${prtHtml}
+        </body>
+        </html>`)
+
+    WinPrint.document.close()
+    WinPrint.focus()
+    WinPrint.print()
+    WinPrint.close()
+}
 </script>
 
 <template>
@@ -241,134 +279,187 @@ const handleDelete = id => {
                 :style="{ width: '50rem' }"
                 :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
             >
-                <div class="font-bold text-center">
-                    SHREE BHIMESHWOR RUDRA SECONDARY SCHOOL
-                </div>
+                <div id="progressReport">
+                    <div class="font-bold text-center">
+                        SHREE BHIMESHWOR RUDRA SECONDARY SCHOOL
+                    </div>
 
-                <div class="flex justify-center space-x-3">
-                    <img src="logo.png" alt="logo" class="h-20 w-20" />
+                    <div class="flex justify-center space-x-3 space-y-4 mb-4">
+                        <img src="logo.png" alt="logo" class="h-20 w-20" />
 
-                    <div class="text-center">
-                        <p>Manthali - 8, Chisapani, Ramechhap</p>
-                        <p>Estd.: 2016</p>
-                        <p>HALF YEARLY EXAMINATION - 2077</p>
+                        <div class="text-center">
+                            <p>Manthali - 8, Chisapani, Ramechhap</p>
+                            <p>Estd.: 2016</p>
+                            <p>HALF YEARLY EXAMINATION - 2077</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mb-4">
+                        <div class="font-bold text-center">PROGRESS REPORT</div>
+
+                        <div class="flex justify-evenly">
+                            <div>Name <b>Foo Bar</b></div>
+                            <div>
+                                <div>Class <b>10</b></div>
+                                <div>Roll No <b>10</b></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="w-full border border-collapse text-sm mb-12">
+                        <thead>
+                            <tr>
+                                <th class="border p-2" rowspan="2">
+                                    SERIAL <br />
+                                    NUMBER
+                                </th>
+
+                                <th class="border p-2" rowspan="2">SUBJECTS</th>
+
+                                <th class="border p-2" rowspan="2">
+                                    FULL MARKS
+                                </th>
+
+                                <th class="border p-2" colspan="3">
+                                    OBTAINED MARKS
+                                </th>
+
+                                <th class="border p-2" rowspan="2">TOTAL</th>
+
+                                <th class="border p-2" rowspan="2">REMARKS</th>
+                            </tr>
+
+                            <tr>
+                                <th class="border p-2">TH</th>
+                                <th class="border p-2">PR</th>
+                                <th class="border p-2">CAS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="border text-center p-2">01</td>
+                                <td class="border p-2">NEPALI</td>
+                                <td class="border text-center p-2">45</td>
+                                <td class="border text-center p-2">20</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="border text-center p-2">01</td>
+                                <td class="border p-2">NEPALI</td>
+                                <td class="border text-center p-2">45</td>
+                                <td class="border text-center p-2">20</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="border text-center p-2">01</td>
+                                <td class="border p-2">NEPALI</td>
+                                <td class="border text-center p-2">45</td>
+                                <td class="border text-center p-2">20</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="border text-center p-2">01</td>
+                                <td class="border p-2">NEPALI</td>
+                                <td class="border text-center p-2">45</td>
+                                <td class="border text-center p-2">20</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="border text-center p-2">01</td>
+                                <td class="border p-2">NEPALI</td>
+                                <td class="border text-center p-2">45</td>
+                                <td class="border text-center p-2">20</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="border text-center p-2">01</td>
+                                <td class="border p-2">NEPALI</td>
+                                <td class="border text-center p-2">45</td>
+                                <td class="border text-center p-2">20</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="border text-center p-2">01</td>
+                                <td class="border p-2">NEPALI</td>
+                                <td class="border text-center p-2">45</td>
+                                <td class="border text-center p-2">20</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="border text-center p-2">01</td>
+                                <td class="border p-2">NEPALI</td>
+                                <td class="border text-center p-2">45</td>
+                                <td class="border text-center p-2">20</td>
+                                <td class="border p-2">-</td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                                <td class="border p-2"></td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>TOTAL</td>
+                                <td>1000</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-around">
+                            <div>..............................</div>
+                            <div></div>
+                            <div>..............................</div>
+                        </div>
+
+                        <div class="flex justify-around">
+                            <div>Class Teacher</div>
+                            <div>School Stamp</div>
+                            <div>Head Teacher</div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="font-bold text-center">PROGRESS REPORT</div>
-
-                <div class="flex justify-evenly">
-                    <div>Name <b>Foo Bar</b></div>
-                    <div>
-                        <div>Class <b>10</b></div>
-                        <div>Roll No <b>10</b></div>
-                    </div>
-                </div>
-
-                <table class="w-full border border-collapse text-sm">
-                    <thead>
-                        <tr>
-                            <th class="border p-2" rowspan="2">
-                                SERIAL <br />
-                                NUMBER
-                            </th>
-
-                            <th class="border p-2" rowspan="2">SUBJECTS</th>
-
-                            <th class="border p-2" rowspan="2">FULL MARKS</th>
-
-                            <th class="border p-2" colspan="3">
-                                OBTAINED MARKS
-                            </th>
-
-                            <th class="border p-2" rowspan="2">TOTAL</th>
-
-                            <th class="border p-2" rowspan="2">REMARKS</th>
-                        </tr>
-
-                        <tr>
-                            <th class="border p-2">TH</th>
-                            <th class="border p-2">PR</th>
-                            <th class="border p-2">CAS</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td class="border text-center p-2">01</td>
-                            <td class="border p-2">NEPALI</td>
-                            <td class="border text-center p-2">45</td>
-                            <td class="border text-center p-2">20</td>
-                            <td class="border p-2">-</td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="border text-center p-2">01</td>
-                            <td class="border p-2">NEPALI</td>
-                            <td class="border text-center p-2">45</td>
-                            <td class="border text-center p-2">20</td>
-                            <td class="border p-2">-</td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="border text-center p-2">01</td>
-                            <td class="border p-2">NEPALI</td>
-                            <td class="border text-center p-2">45</td>
-                            <td class="border text-center p-2">20</td>
-                            <td class="border p-2">-</td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="border text-center p-2">01</td>
-                            <td class="border p-2">NEPALI</td>
-                            <td class="border text-center p-2">45</td>
-                            <td class="border text-center p-2">20</td>
-                            <td class="border p-2">-</td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="border text-center p-2">01</td>
-                            <td class="border p-2">NEPALI</td>
-                            <td class="border text-center p-2">45</td>
-                            <td class="border text-center p-2">20</td>
-                            <td class="border p-2">-</td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                            <td class="border p-2"></td>
-                        </tr>
-                    </tbody>
-
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>TOTAL</td>
-                            <td>1000</td>
-                        </tr>
-                    </tfoot>
-                </table>
 
                 <div class="mt-4 flex justify-end">
                     <Button
                         label="Print"
                         icon="pi pi-external-link"
-                        @click="visible = true"
+                        @click="handlePrintBtn"
                         size="small"
                     />
                 </div>
