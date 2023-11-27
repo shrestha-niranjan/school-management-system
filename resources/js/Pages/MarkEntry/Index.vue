@@ -26,9 +26,13 @@ defineProps({
 })
 
 const handleEdit = id => {
-    showMarksheet.value = true
+    router.get(route('mark-entry.edit', { student: id }))
+}
 
+const handleGenerateMarksheet = id => {
     axios.get(route('generate.marksheet', { student: id })).then(res => {
+        showMarksheet.value = true
+
         selectedStudent.value = res.data
     })
 }
@@ -155,7 +159,7 @@ const schoolSetting = usePage().props.auth.schoolSetting
                             rounded
                             severity="warning"
                             class="h-10 w-10"
-                            @click="handleEdit(slotProps.data.id)"
+                            @click="handleGenerateMarksheet(slotProps.data.id)"
                             v-tooltip.bottom="'Generate Marksheet'"
                         />
                     </template>
@@ -347,100 +351,55 @@ const schoolSetting = usePage().props.auth.schoolSetting
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td class="border text-center p-2">01</td>
-                                <td class="border p-2">NEPALI</td>
-                                <td class="border text-center p-2">45</td>
-                                <td class="border text-center p-2">20</td>
-                                <td class="border p-2">-</td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                            </tr>
+                            <tr
+                                v-for="(
+                                    markEntry, index
+                                ) in selectedStudent.mark_entries"
+                                :key="index"
+                            >
+                                <td class="border text-center p-2">
+                                    {{ ++index }}
+                                </td>
+                                <td class="border p-2">
+                                    {{ markEntry.course.name }}
+                                </td>
+                                <td class="border text-center p-2">
+                                    {{ markEntry.course.full_mark }}
+                                </td>
 
-                            <tr>
-                                <td class="border text-center p-2">01</td>
-                                <td class="border p-2">NEPALI</td>
-                                <td class="border text-center p-2">45</td>
-                                <td class="border text-center p-2">20</td>
-                                <td class="border p-2">-</td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                            </tr>
+                                <td class="border text-center p-2">
+                                    {{ markEntry.external }}
+                                </td>
 
-                            <tr>
-                                <td class="border text-center p-2">01</td>
-                                <td class="border p-2">NEPALI</td>
-                                <td class="border text-center p-2">45</td>
-                                <td class="border text-center p-2">20</td>
-                                <td class="border p-2">-</td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                            </tr>
+                                <td class="border p-2">
+                                    {{ markEntry.internal }}
+                                </td>
 
-                            <tr>
-                                <td class="border text-center p-2">01</td>
-                                <td class="border p-2">NEPALI</td>
-                                <td class="border text-center p-2">45</td>
-                                <td class="border text-center p-2">20</td>
-                                <td class="border p-2">-</td>
                                 <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                            </tr>
-
-                            <tr>
-                                <td class="border text-center p-2">01</td>
-                                <td class="border p-2">NEPALI</td>
-                                <td class="border text-center p-2">45</td>
-                                <td class="border text-center p-2">20</td>
-                                <td class="border p-2">-</td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                            </tr>
-
-                            <tr>
-                                <td class="border text-center p-2">01</td>
-                                <td class="border p-2">NEPALI</td>
-                                <td class="border text-center p-2">45</td>
-                                <td class="border text-center p-2">20</td>
-                                <td class="border p-2">-</td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                            </tr>
-
-                            <tr>
-                                <td class="border text-center p-2">01</td>
-                                <td class="border p-2">NEPALI</td>
-                                <td class="border text-center p-2">45</td>
-                                <td class="border text-center p-2">20</td>
-                                <td class="border p-2">-</td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
-                            </tr>
-
-                            <tr>
-                                <td class="border text-center p-2">01</td>
-                                <td class="border p-2">NEPALI</td>
-                                <td class="border text-center p-2">45</td>
-                                <td class="border text-center p-2">20</td>
-                                <td class="border p-2">-</td>
-                                <td class="border p-2"></td>
-                                <td class="border p-2"></td>
+                                <td class="border p-2">
+                                    {{
+                                        markEntry.external + markEntry.internal
+                                    }}
+                                </td>
                                 <td class="border p-2"></td>
                             </tr>
                         </tbody>
 
                         <tfoot>
                             <tr>
-                                <td colspan="6"></td>
+                                <td colspan="5"></td>
                                 <td class="p-4 font-bold">TOTAL</td>
-                                <td class="p-4 font-bold">1000</td>
+                                <td class="p-4 font-bold">
+                                    {{
+                                        selectedStudent.mark_entries.reduce(
+                                            function (prev, cur) {
+                                                return prev + cur.total
+                                            },
+                                            0
+                                        )
+                                    }}
+                                </td>
+                                <td class="p-4 font-bold"></td>
                             </tr>
                         </tfoot>
                     </table>

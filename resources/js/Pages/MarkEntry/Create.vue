@@ -98,7 +98,7 @@ const remove = index => {
                     class="bg-red-600 text-white"
                     label="Back"
                     :icon="mdiArrowLeft"
-                    :routeName="route('users.index')"
+                    :routeName="route('mark-entry.index')"
                 />
             </div>
         </template>

@@ -9,6 +9,8 @@ class MarkSheetController extends Controller
 {
     public function __invoke(User $student)
     {
+        $student->load('markEntries.course');
+
         return $student;
     }
 }
