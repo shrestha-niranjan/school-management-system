@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { mdiPlus } from '@mdi/js'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
 import { useToast } from 'primevue/usetoast'
@@ -90,6 +90,8 @@ const handlePrintBtn = () => {
     WinPrint.print()
     WinPrint.close()
 }
+
+const schoolSetting = usePage().props.auth.schoolSetting
 </script>
 
 <template>
@@ -280,16 +282,18 @@ const handlePrintBtn = () => {
                 :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
             >
                 <div id="progressReport">
-                    <div class="font-bold text-center">
-                        SHREE BHIMESHWOR RUDRA SECONDARY SCHOOL
+                    <div class="font-bold text-center text-xl uppercase">
+                        {{ schoolSetting.name }}
                     </div>
 
                     <div class="flex justify-center space-x-3 space-y-4 mb-4">
                         <img src="logo.png" alt="logo" class="h-20 w-20" />
 
                         <div class="text-center">
-                            <p>Manthali - 8, Chisapani, Ramechhap</p>
-                            <p>Estd.: 2016</p>
+                            <p class="font-bold">
+                                Manthali - 8, Chisapani, Ramechhap
+                            </p>
+                            <p class="font-bold">Estd.: 2016</p>
                             <p>HALF YEARLY EXAMINATION - 2077</p>
                         </div>
                     </div>
@@ -298,10 +302,11 @@ const handlePrintBtn = () => {
                         <div class="font-bold text-center">PROGRESS REPORT</div>
 
                         <div class="flex justify-evenly">
-                            <div>Name <b>Foo Bar</b></div>
+                            <div class="font-bold">NAME: Foo Bar</div>
+
                             <div>
-                                <div>Class <b>10</b></div>
-                                <div>Roll No <b>10</b></div>
+                                <div class="font-bold">CLASS: 10</div>
+                                <div class="font-bold">ROLL No: 10</div>
                             </div>
                         </div>
                     </div>
@@ -309,30 +314,35 @@ const handlePrintBtn = () => {
                     <table class="w-full border border-collapse text-sm mb-12">
                         <thead>
                             <tr>
-                                <th class="border p-2" rowspan="2">
+                                <th class="border p-4 -rotate-90" rowspan="2">
                                     SERIAL <br />
                                     NUMBER
                                 </th>
 
-                                <th class="border p-2" rowspan="2">SUBJECTS</th>
+                                <th class="border p-4" rowspan="2">SUBJECTS</th>
 
-                                <th class="border p-2" rowspan="2">
-                                    FULL MARKS
+                                <th class="border p-4 -rotate-90" rowspan="2">
+                                    FULL <br />
+                                    MARKS
                                 </th>
 
-                                <th class="border p-2" colspan="3">
+                                <th class="border p-4" colspan="3">
                                     OBTAINED MARKS
                                 </th>
 
-                                <th class="border p-2" rowspan="2">TOTAL</th>
+                                <th class="border p-4 -rotate-90" rowspan="2">
+                                    TOTAL
+                                </th>
 
-                                <th class="border p-2" rowspan="2">REMARKS</th>
+                                <th class="border p-4 -rotate-90" rowspan="2">
+                                    REMARKS
+                                </th>
                             </tr>
 
                             <tr>
-                                <th class="border p-2">TH</th>
-                                <th class="border p-2">PR</th>
-                                <th class="border p-2">CAS</th>
+                                <th class="border p-4">TH</th>
+                                <th class="border p-4">PR</th>
+                                <th class="border p-4">CAS</th>
                             </tr>
                         </thead>
 
@@ -428,14 +438,9 @@ const handlePrintBtn = () => {
 
                         <tfoot>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>TOTAL</td>
-                                <td>1000</td>
+                                <td colspan="6"></td>
+                                <td class="p-4 font-bold">TOTAL</td>
+                                <td class="p-4 font-bold">1000</td>
                             </tr>
                         </tfoot>
                     </table>
