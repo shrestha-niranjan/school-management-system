@@ -28,6 +28,7 @@ import ColumnGroup from 'primevue/columngroup'
 import Row from 'primevue/row'
 import FocusTrap from 'primevue/focustrap'
 import Tooltip from 'primevue/tooltip'
+import Dialog from 'primevue/dialog'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 const pinia = createPinia()
@@ -60,6 +61,7 @@ createInertiaApp({
             .component('Column', Column)
             .component('ColumnGroup', ColumnGroup)
             .component('Row', Row)
+            .component('Dialog', Dialog)
             .directive('focustrap', FocusTrap)
             .directive('tooltip', Tooltip)
             .mount(el)

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MarkEntryController;
 use App\Http\Controllers\MarkLedgerController;
+use App\Http\Controllers\MarkSheetController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -43,6 +44,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [MarkLedgerController::class, 'index'])->name('index');
 
     });
+
+    Route::get('marksheet/{student}', MarkSheetController::class)->name('generate.marksheet');
 });
 
 require __DIR__.'/auth.php';
