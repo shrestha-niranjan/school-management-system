@@ -2,18 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use App\Models\Course;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -55,25 +49,5 @@ class User extends Authenticatable
         $builder->whereHas('roles', function ($q) {
             $q->where('name', '!=', 'Super Admin');
         });
-    }
-
-    /**
-     * Get all of the markEntries for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function markEntries(): HasMany
-    {
-        return $this->hasMany(MarkEntry::class);
-    }
-
-    /**
-     * Get the grade that owns the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function grade(): BelongsTo
-    {
-        return $this->belongsTo(Grade::class);
     }
 }

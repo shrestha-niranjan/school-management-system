@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Grade;
 use App\Models\SchoolSetting;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,8 +17,9 @@ class SchoolSettingSeeder extends Seeder
         SchoolSetting::query()
             ->firstOrCreate([
                 'name' => 'Shree Bhimeshwor Rudra Secondary School',
-                'academic_year' => 2080,
-                'established_at' => 2038
+                'grade_id' => 10,
+                'established_at' => 2038,
+                'academic_year' => date('Y')
             ]);
     }
 }

@@ -8,7 +8,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import { createPinia } from 'pinia'
 import { useStyleStore } from '@/Store/style.js'
 import PrimeVue from 'primevue/config'
-import 'primevue/resources/themes/lara-light-teal/theme.css'
+import 'primevue/resources/themes/lara-dark-teal/theme.css'
 import 'primeicons/primeicons.css'
 import Toast from 'primevue/toast'
 
@@ -29,6 +29,7 @@ import Row from 'primevue/row'
 import FocusTrap from 'primevue/focustrap'
 import Tooltip from 'primevue/tooltip'
 import Dialog from 'primevue/dialog'
+import Calendar from 'primevue/calendar'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 const pinia = createPinia()
@@ -62,6 +63,7 @@ createInertiaApp({
             .component('ColumnGroup', ColumnGroup)
             .component('Row', Row)
             .component('Dialog', Dialog)
+            .component('Calendar', Calendar)
             .directive('focustrap', FocusTrap)
             .directive('tooltip', Tooltip)
             .mount(el)

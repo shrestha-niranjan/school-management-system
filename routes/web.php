@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\MarkEntryController;
-use App\Http\Controllers\MarkLedgerController;
-use App\Http\Controllers\MarkSheetController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\MarkEntryController;
+use App\Http\Controllers\MarkSheetController;
+use App\Http\Controllers\MarkLedgerController;
 
 Route::get('/', function () {
     return to_route('dashboard');
@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
         )
     ;
 
-    Route::resource('users', UserController::class);
+    Route::resource('students', StudentController::class);
 
     Route::get('mark-entry', [MarkEntryController::class, 'index'])->name('mark-entry.index');
     Route::post('mark-entry', [MarkEntryController::class, 'store'])->name('mark-entry.store');

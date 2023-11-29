@@ -47,8 +47,8 @@ class HandleInertiaRequests extends Middleware
                     'isVisible' => true
                 ],
                 [
-                    'label' => 'User Management',
-                    'route' => 'users.index',
+                    'label' => 'Student Management',
+                    'route' => 'students.index',
                     'icon' => 'mdiAccountGroup',
                     'isVisible' => true,
                 ],

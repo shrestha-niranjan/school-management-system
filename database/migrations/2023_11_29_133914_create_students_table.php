@@ -11,15 +11,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('school_settings', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->id();
-
             $table->string('name');
-
-            $table->unsignedBigInteger('established_at')
-                ->default(2000);
-
-            $table->string('academic_year')->default(date('Y'));
+            $table->date('dob');
+            $table->string('father_name')->nullable();
+            $table->string('mother_name')->nullable();
+            $table->string('address')->nullable();
 
             $table->foreignIdFor(Grade::class)
                 ->constrained()
@@ -34,6 +32,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('students');
     }
 };
