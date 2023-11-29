@@ -24,7 +24,7 @@ class BreadcrumbService
             $url .= '/' . $segment;
 
             $breadcrumbs['items'][] = [
-                'label' => ucwords($segment),
+                'label' => ucwords(str_replace('-', ' ', $segment)),
                 'route' => $url,
             ];
         }
