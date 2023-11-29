@@ -23,7 +23,10 @@ class SettingUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'academic_year' => 'required'
+            'address' => 'required',
+            'established_at' => 'required',
+            'academic_year' => 'required',
+            'grade_id' => 'required'
         ];
     }
 }

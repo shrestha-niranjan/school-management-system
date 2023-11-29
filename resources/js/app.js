@@ -30,6 +30,7 @@ import FocusTrap from 'primevue/focustrap'
 import Tooltip from 'primevue/tooltip'
 import Dialog from 'primevue/dialog'
 import Calendar from 'primevue/calendar'
+import Divider from 'primevue/divider'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 const pinia = createPinia()
@@ -64,6 +65,7 @@ createInertiaApp({
             .component('Row', Row)
             .component('Dialog', Dialog)
             .component('Calendar', Calendar)
+            .component('Divider', Divider)
             .directive('focustrap', FocusTrap)
             .directive('tooltip', Tooltip)
             .mount(el)

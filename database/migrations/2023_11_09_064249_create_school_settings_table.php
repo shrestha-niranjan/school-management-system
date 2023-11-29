@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
 
             $table->string('name');
+            $table->string('address');
 
             $table->unsignedBigInteger('established_at')
                 ->default(2000);
@@ -22,8 +23,7 @@ return new class extends Migration {
             $table->string('academic_year')->default(date('Y'));
 
             $table->foreignIdFor(Grade::class)
-                ->constrained()
-                ->cascadeOnDelete();
+                ->constrained();
 
             $table->timestamps();
         });

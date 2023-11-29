@@ -16,7 +16,8 @@ class GradeOptionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'courses' => $this->courses
         ];
     }
 }

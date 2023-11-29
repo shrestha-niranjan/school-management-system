@@ -4,7 +4,8 @@ import UpdateSettingForm from './Partials/UpdateSettingForm.vue'
 import { Head } from '@inertiajs/vue3'
 
 defineProps({
-    title: String
+    title: String,
+    grades: Object
 })
 </script>
 
@@ -25,7 +26,7 @@ defineProps({
                 <div
                     class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
                 >
-                    <UpdateSettingForm />
+                    <UpdateSettingForm :grades="grades" />
                 </div>
             </div>
         </div>

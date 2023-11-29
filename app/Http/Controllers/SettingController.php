@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Grade;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Models\SchoolSetting;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\SettingUpdateRequest;
+use App\Http\Resources\GradeOptionResource;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class SettingController extends Controller
@@ -19,9 +21,15 @@ class SettingController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('Setting/Edit', [
-            'title' => 'Basic Settings'
-        ]);
+        $data['grades'] = GradeOptionResource::collection(
+            Grade::query()
+                ->with('courses')
+                ->get()
+        );
+
+        $data['title'] = 'Basic Settings';
+
+        return Inertia::render('Setting/Edit', $data);
     }
 
     public function update(SettingUpdateRequest $request): RedirectResponse
