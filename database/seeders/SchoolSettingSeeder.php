@@ -16,7 +16,8 @@ class SchoolSettingSeeder extends Seeder
         SchoolSetting::query()
             ->firstOrCreate([
                 'name' => 'Shree Bhimeshwor Rudra Secondary School',
-                'academic_year' => 2080
+                'academic_year' => 2080,
+                'established_at' => 2038
             ]);
     }
 }

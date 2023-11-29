@@ -285,7 +285,7 @@ const schoolSetting = usePage().props.auth.schoolSetting
                 :style="{ width: '50rem' }"
                 :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
             >
-                <div id="progressReport">
+                <div id="progressReport" class="bg">
                     <div class="font-bold text-center text-xl uppercase">
                         {{ schoolSetting.name }}
                     </div>
@@ -431,3 +431,10 @@ const schoolSetting = usePage().props.auth.schoolSetting
         </template>
     </SectionMain>
 </template>
+
+<style scoped>
+.bg {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg viewBox='0 0 598 245' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3ctext x='30' y='40' fill='gray'%3eSchool Level Examination%3c/text%3e%3c/svg%3e ");
+    background-size: 30px 30px;
+}
+</style>
