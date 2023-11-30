@@ -13,7 +13,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\SettingUpdateRequest;
 use App\Http\Resources\GradeOptionResource;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class SettingController extends Controller
 {

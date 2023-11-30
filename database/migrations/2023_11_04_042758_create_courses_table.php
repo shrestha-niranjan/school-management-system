@@ -14,21 +14,7 @@ return new class extends Migration {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(Grade::class)
-                ->constrained()
-                ->cascadeOnDelete();
-
             $table->string('name');
-
-            $table->unsignedInteger('internal_mark')
-                ->default(100);
-
-            $table->unsignedInteger('external_mark')
-                ->default(0);
-
-            // TODO:: manage this full mark
-            $table->unsignedInteger('full_mark')
-                ->default(100);
 
             $table->timestamps();
         });

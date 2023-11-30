@@ -1,7 +1,7 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const props = defineProps({
     grades: Object
@@ -32,21 +32,28 @@ function generateYears (start, end) {
     return years
 }
 
-const selectedGrade = props.grades.find(grade => grade.id === form.grade_id)
-
-const gradeCourses = selectedGrade.courses
+const gradeCourses = ref([
+    {
+        name: '',
+        pivot: {
+            internal_mark: null,
+            external_mark: null
+        }
+    }
+])
 
 const add = () => {
-    gradeCourses.push({
-        grade_id: schoolSetting.grade_id,
+    gradeCourses.value.push({
         name: '',
-        external_mark: null,
-        internal_mark: null
+        pivot: {
+            internal_mark: null,
+            external_mark: null
+        }
     })
 }
 
 const remove = index => {
-    gradeCourses.splice(index, 1)
+    gradeCourses.value.splice(index, 1)
 }
 
 const handleFormSubmit = () => {
@@ -56,6 +63,20 @@ const handleFormSubmit = () => {
         preserveScroll: true
     })
 }
+
+const handleGradeChange = () => {
+    gradeCourses.value = props.grades.find(
+        grade => grade.id === form.grade_id
+    ).courses
+}
+
+onMounted(() => {
+    let courses = props.grades.find(grade => grade.id === form.grade_id).courses
+
+    if (courses.length) {
+        gradeCourses.value = courses
+    }
+})
 </script>
 
 <template>
@@ -67,7 +88,7 @@ const handleFormSubmit = () => {
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 Update your school's basic informations. Note that these changes
-                will impact whole system. So be careful.
+                will impact whole system. So be careful. {{ gradeCourses }}
             </p>
         </header>
 
@@ -165,6 +186,7 @@ const handleFormSubmit = () => {
                         v-model="form.grade_id"
                         inputId="dd-grade"
                         :options="grades"
+                        @change="handleGradeChange"
                         option-label="name"
                         option-value="id"
                         class="w-full md:w-14rem"
@@ -184,7 +206,7 @@ const handleFormSubmit = () => {
 
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     <!-- TODO::axios for grades courses -->
-                    Update your courses for grade {{ selectedGrade.name }}
+                    Update your courses for grade
                 </p>
             </header>
 
@@ -221,7 +243,7 @@ const handleFormSubmit = () => {
                 <div class="col-span-3 mb-8">
                     <span class="p-float-label">
                         <InputNumber
-                            v-model="course.external_mark"
+                            v-model="course.pivot.external_mark"
                             class="w-full"
                             :class="
                                 form.errors[
@@ -256,7 +278,7 @@ const handleFormSubmit = () => {
                 <div class="col-span-3 mb-8">
                     <span class="p-float-label">
                         <InputNumber
-                            v-model="course.internal_mark"
+                            v-model="course.pivot.internal_mark"
                             class="w-full"
                             :class="
                                 form.errors['marks.' + index + '.internal'] &&
