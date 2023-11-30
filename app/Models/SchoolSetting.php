@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Grade;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SchoolSetting extends Model
@@ -13,12 +15,12 @@ class SchoolSetting extends Model
     // TODO:: add logo
 
     /**
-     * Get the grade associated with the SchoolSetting
+     * Get the grade that owns the SchoolSetting
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function grade(): HasOne
+    public function grade(): BelongsTo
     {
-        return $this->hasOne(Grade::class);
+        return $this->belongsTo(Grade::class);
     }
 }

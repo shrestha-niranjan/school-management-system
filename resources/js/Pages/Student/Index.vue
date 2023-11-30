@@ -70,6 +70,10 @@ const handleDelete = id => {
                 paginator
                 tableStyle="min-width: 50rem"
             >
+                <template #empty>
+                    <div class="text-center">No records found.</div>
+                </template>
+
                 <Column header="#" headerStyle="width:3rem">
                     <template #body="slotProps">
                         {{ slotProps.index + 1 }}

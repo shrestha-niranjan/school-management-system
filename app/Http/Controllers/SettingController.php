@@ -40,18 +40,16 @@ class SettingController extends Controller
 
         unset($data['courses']);
 
-        $grade = Grade::find($data['grade_id']);
-        $grade->courses()->delete();
-
         foreach ($courses as $course) {
             Course::query()
-                ->updateOrCreate([
-                    'grade_id' => $data['grade_id'],
-                    'name' => $course['name']
-                ], [
-                    'internal_mark' => $course['internal_mark'],
-                    'external_mark' => $course['external_mark'],
-                ]);
+            ->updateOrCreate([
+                'id' => $course['id'],
+            ], [
+                'grade_id' => $data['grade_id'],
+                'name' => $course['name'],
+                'internal_mark' => $course['internal_mark'],
+                'external_mark' => $course['external_mark'],
+            ]);
         }
 
         $schoolSetting = SchoolSetting::first();

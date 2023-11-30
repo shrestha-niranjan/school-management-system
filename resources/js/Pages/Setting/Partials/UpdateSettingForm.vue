@@ -34,6 +34,7 @@ function generateYears (start, end) {
 
 const gradeCourses = ref([
     {
+        id: null,
         name: '',
         internal_mark: null,
         external_mark: null
@@ -42,6 +43,7 @@ const gradeCourses = ref([
 
 const add = () => {
     gradeCourses.value.push({
+        id: null,
         name: '',
         internal_mark: null,
         external_mark: null
@@ -68,6 +70,7 @@ const handleGradeChange = () => {
     } else {
         gradeCourses.value = [
             {
+                id: null,
                 name: '',
                 internal_mark: null,
                 external_mark: null

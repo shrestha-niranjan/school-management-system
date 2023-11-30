@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Student;
 
 class MarkSheetController extends Controller
 {
-    public function __invoke(User $student)
+    public function __invoke(Student $student)
     {
         $student->load('markEntries.course');
 

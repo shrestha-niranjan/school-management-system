@@ -143,6 +143,12 @@ defineProps({
                                     }}
                                 </td>
                             </tr>
+
+                            <tr v-if="!students.length">
+                                <td class="text-center" colspan="3">
+                                    No records found.
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

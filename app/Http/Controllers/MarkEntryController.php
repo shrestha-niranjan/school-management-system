@@ -24,10 +24,7 @@ class MarkEntryController extends Controller
               ->get(['id', 'name'])
         );
 
-        $data['students'] = User::query()
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'Student');
-            })
+        $data['students'] = Student::query()
             ->get();
 
         return Inertia::render('MarkEntry/Create', $data);
@@ -40,7 +37,7 @@ class MarkEntryController extends Controller
         return to_route('mark-entry.index');
     }
 
-    public function edit(User $student): Response
+    public function edit(Student $student): Response
     {
         $data['isEdit'] = true;
         $data['item'] = $student;
@@ -52,28 +49,14 @@ class MarkEntryController extends Controller
               ->get(['id', 'name'])
         );
 
-        $data['students'] = User::query()
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'Student');
-            })
+        $data['students'] = Student::query()
             ->get();
 
         return Inertia::render('MarkEntry/Create', $data);
     }
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        // $data['students'] = User::query()
-        //     ->with('markEntries')
-        //     ->whereHas('roles', function ($query) {
-        //         $query->where('name', 'Student');
-        //     })
-        //     ->get()
-        // ;
-
-        // $data['courses'] = Course::query()
-        //     ->pluck('name', 'id');
-
         $data['items'] =  MarkEntryResource::collection(
             Student::query()
                 ->whereHas('markEntries')
@@ -105,7 +88,7 @@ class MarkEntryController extends Controller
         foreach ($data['marks'] as $markEntry) {
             MarkEntry::query()
                 ->create([
-                    'user_id' => $data['student_id'],
+                    'student_id' => $data['student_id'],
                     'course_id' => $markEntry['course_id'],
                     'external' => $markEntry['external'],
                     'internal' => $markEntry['internal']
@@ -115,7 +98,7 @@ class MarkEntryController extends Controller
         return to_route('mark-entry.index');
     }
 
-    public function update(UpdateMarkEntryRequest $request, User $student): RedirectResponse
+    public function update(UpdateMarkEntryRequest $request, Student $student): RedirectResponse
     {
         $data = $request->validated();
 
