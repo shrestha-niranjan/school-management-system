@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\Course;
+use App\Models\Student;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('mark_entries', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(User::class)
+            $table->foreignIdFor(Student::class)
                 ->constrained()
                 ->cascadeOnDelete();
 

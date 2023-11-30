@@ -13,6 +13,7 @@ use App\Http\Resources\MarkEntryResource;
 use App\Http\Requests\StoreMarkEntryRequest;
 use App\Http\Resources\CourseOptionResource;
 use App\Http\Requests\UpdateMarkEntryRequest;
+use App\Models\Student;
 
 class MarkEntryController extends Controller
 {
@@ -74,11 +75,8 @@ class MarkEntryController extends Controller
         //     ->pluck('name', 'id');
 
         $data['items'] =  MarkEntryResource::collection(
-            User::query()
+            Student::query()
                 ->whereHas('markEntries')
-                ->whereHas('roles', function ($query) {
-                    $query->where('name', 'Student');
-                })
                 ->paginate()
         );
 
