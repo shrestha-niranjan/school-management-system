@@ -43,7 +43,7 @@ class SettingController extends Controller
         foreach ($courses as $course) {
             Course::query()
                 ->updateOrCreate([
-                    'grade_id' => school_setting()->grade_id,
+                    'grade_id' => $data['grade_id'],
                 ], [
                     'name' => $course['name'],
                     'internal_mark' => $course['internal_mark'],

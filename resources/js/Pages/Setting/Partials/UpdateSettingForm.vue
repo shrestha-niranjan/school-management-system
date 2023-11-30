@@ -249,7 +249,7 @@ onMounted(() => {
                                 form.errors[
                                     'courses.' + index + '.external_mark'
                                 ] &&
-                                !course.external_mark &&
+                                !course.pivot.external_mark &&
                                 'p-invalid'
                             "
                             :use-grouping="false"
@@ -266,7 +266,7 @@ onMounted(() => {
                             (form.errors[
                                 'courses.' + index + '.external_mark'
                             ] &&
-                                !course.external_mark &&
+                                !course.pivot.external_mark &&
                                 form.errors[
                                     'courses.' + index + '.external_mark'
                                 ]) ||
@@ -281,8 +281,10 @@ onMounted(() => {
                             v-model="course.pivot.internal_mark"
                             class="w-full"
                             :class="
-                                form.errors['marks.' + index + '.internal'] &&
-                                !course.internal_mark &&
+                                form.errors[
+                                    'courses.' + index + '.internal_mark'
+                                ] &&
+                                !course.pivot.internal_mark &&
                                 'p-invalid'
                             "
                             :use-grouping="false"
@@ -297,9 +299,13 @@ onMounted(() => {
 
                     <small class="p-error" id="text-error">
                         {{
-                            (form.errors['marks.' + index + '.internal'] &&
-                                !course.internal_mark &&
-                                form.errors['marks.' + index + '.internal']) ||
+                            (form.errors[
+                                'courses.' + index + '.internal_mark'
+                            ] &&
+                                !course.pivot.internal_mark &&
+                                form.errors[
+                                    'courses.' + index + '.internal_mark'
+                                ]) ||
                             '&nbsp;'
                         }}
                     </small>
