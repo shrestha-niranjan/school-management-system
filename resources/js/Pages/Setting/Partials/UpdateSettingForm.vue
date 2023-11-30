@@ -14,7 +14,8 @@ const form = useForm({
     address: schoolSetting.address,
     established_at: schoolSetting.established_at,
     academic_year: parseInt(schoolSetting.academic_year),
-    grade_id: schoolSetting.grade_id
+    grade_id: schoolSetting.grade_id,
+    courses: []
 })
 
 const currentYear = new Date().getFullYear()
@@ -34,6 +35,27 @@ function generateYears (start, end) {
 const selectedGrade = props.grades.find(grade => grade.id === form.grade_id)
 
 const gradeCourses = selectedGrade.courses
+
+const add = () => {
+    gradeCourses.push({
+        grade_id: schoolSetting.grade_id,
+        name: '',
+        external_mark: null,
+        internal_mark: null
+    })
+}
+
+const remove = index => {
+    gradeCourses.splice(index, 1)
+}
+
+const handleFormSubmit = () => {
+    form.courses = gradeCourses
+
+    form.patch(route('settings.update'), {
+        preserveScroll: true
+    })
+}
 </script>
 
 <template>
@@ -44,16 +66,12 @@ const gradeCourses = selectedGrade.courses
             </h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Update your schoool's basic informations. Note that these
-                changes will impact whole system. So be careful.
+                Update your school's basic informations. Note that these changes
+                will impact whole system. So be careful.
             </p>
         </header>
 
-        <form
-            @submit.prevent="form.patch(route('settings.update'))"
-            v-focustrap
-            class="mt-8 space-y-2"
-        >
+        <form @submit.prevent="handleFormSubmit" class="mt-8">
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
                     <span class="p-float-label">
@@ -175,14 +193,16 @@ const gradeCourses = selectedGrade.courses
                 :key="index"
                 class="grid grid-cols-1 sm:grid-cols-12 gap-4"
             >
-                <div class="col-span-4">
+                <div class="col-span-4 mb-8">
                     <span class="p-float-label">
                         <InputText
                             autofocus
                             v-model="course.name"
                             class="w-full"
                             :class="
-                                form.errors.name && !form.name && 'p-invalid'
+                                form.errors['courses.' + index + '.name'] &&
+                                !course.name &&
+                                'p-invalid'
                             "
                         />
                         <label for="name">Name</label>
@@ -190,21 +210,23 @@ const gradeCourses = selectedGrade.courses
 
                     <small class="p-error" id="text-error">
                         {{
-                            (form.errors.name &&
-                                !form.name &&
-                                form.errors.name) ||
+                            (form.errors['courses.' + index + '.name'] &&
+                                !course.name &&
+                                form.errors['courses.' + index + '.name']) ||
                             '&nbsp;'
                         }}
                     </small>
                 </div>
 
-                <div class="col-span-3">
+                <div class="col-span-3 mb-8">
                     <span class="p-float-label">
                         <InputNumber
                             v-model="course.external_mark"
                             class="w-full"
                             :class="
-                                form.errors['marks.' + index + '.external'] &&
+                                form.errors[
+                                    'courses.' + index + '.external_mark'
+                                ] &&
                                 !course.external_mark &&
                                 'p-invalid'
                             "
@@ -219,15 +241,19 @@ const gradeCourses = selectedGrade.courses
 
                     <small class="p-error" id="text-error">
                         {{
-                            (form?.errors['marks.' + index + '.external'] &&
+                            (form.errors[
+                                'courses.' + index + '.external_mark'
+                            ] &&
                                 !course.external_mark &&
-                                form?.errors['marks.' + index + '.external']) ||
+                                form.errors[
+                                    'courses.' + index + '.external_mark'
+                                ]) ||
                             '&nbsp;'
                         }}
                     </small>
                 </div>
 
-                <div class="col-span-3">
+                <div class="col-span-3 mb-8">
                     <span class="p-float-label">
                         <InputNumber
                             v-model="course.internal_mark"
@@ -257,26 +283,26 @@ const gradeCourses = selectedGrade.courses
                     </small>
                 </div>
 
-                <!-- <div class="col-span-2 flex justify-around">
-                <Button
-                    @click="add"
-                    icon="pi pi-plus"
-                    severity="success"
-                    rounded
-                    aria-label="Add"
-                    class="h-10 w-10"
-                />
+                <div class="col-span-2 flex justify-around">
+                    <Button
+                        @click="add"
+                        icon="pi pi-plus"
+                        severity="success"
+                        rounded
+                        aria-label="Add"
+                        class="h-10 w-10"
+                    />
 
-                <Button
-                    v-if="index !== 0"
-                    @click="remove(index)"
-                    icon="pi pi-times"
-                    severity="danger"
-                    rounded
-                    aria-label="Remove"
-                    class="h-10 w-10"
-                />
-            </div> -->
+                    <Button
+                        v-if="index !== 0"
+                        @click="remove(index)"
+                        icon="pi pi-times"
+                        severity="danger"
+                        rounded
+                        aria-label="Remove"
+                        class="h-10 w-10"
+                    />
+                </div>
             </div>
 
             <div class="flex items-center gap-4">

@@ -73,17 +73,6 @@ const onSubmit = () => {
           })
 }
 
-const add = () => {
-    form.marks.push({
-        course_id: '',
-        external: null,
-        internal: null
-    })
-}
-
-const remove = index => {
-    form.marks.splice(index, 1)
-}
 </script>
 
 <template>

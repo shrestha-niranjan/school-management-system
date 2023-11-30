@@ -10,6 +10,8 @@ class SchoolSetting extends Model
 {
     use HasFactory;
 
+    // TODO:: add logo
+
     /**
      * Get the grade associated with the SchoolSetting
      *

@@ -26,7 +26,10 @@ class SettingUpdateRequest extends FormRequest
             'address' => 'required',
             'established_at' => 'required',
             'academic_year' => 'required',
-            'grade_id' => 'required'
+            'grade_id' => 'required',
+            'courses.*.name' => 'required',
+            'courses.*.external_mark' => 'required',
+            'courses.*.internal_mark' => 'required'
         ];
     }
 }

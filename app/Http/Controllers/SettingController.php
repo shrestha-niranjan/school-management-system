@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Grade;
 use Inertia\Response;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\SchoolSetting;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,22 @@ class SettingController extends Controller
     public function update(SettingUpdateRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
+        $courses = $data['courses'];
+
+        unset($data['courses']);
+
+        foreach ($courses as $course) {
+            Course::query()
+                ->updateOrCreate([
+                    'grade_id' => school_setting()->grade_id,
+                ], [
+                    'name' => $course['name'],
+                    'internal_mark' => $course['internal_mark'],
+                    'external_mark' => $course['external_mark'],
+                    'full_mark' => $course['internal_mark'] + $course['external_mark']
+                ]);
+        }
 
         $schoolSetting = SchoolSetting::first();
 
