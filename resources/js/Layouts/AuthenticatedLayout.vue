@@ -116,44 +116,6 @@ const toggleDarkMode = () => {
                             class="transition-position duration-500 dark:text-white hidden sm:flex cursor-pointer"
                         />
                         <div class="flex gap-2">
-                            <div
-                                @click.prevent="toggleDarkMode"
-                                class="inline-flex hover:bg-gray-100 cursor-pointer items-center justify-center h-8 w-8 rounded-full"
-                            >
-                                <BaseIcon
-                                    class="text-amber-500 dark:hover:text-gray-900"
-                                    size="24"
-                                    :path="
-                                        useStyleStore().darkMode
-                                            ? mdiWhiteBalanceSunny
-                                            : mdiWeatherNight
-                                    "
-                                />
-                            </div>
-
-                            <!-- <Dropdown align="right" width="48">
-                                <template #trigger>
-                                    <div
-                                        class="inline-flex relative hover:bg-gray-100 cursor-pointer items-center justify-center h-8 w-8 rounded-full"
-                                    >
-                                        <BaseIcon
-                                            :path="mdiBell"
-                                            size="24"
-                                            class="text-gray-500 dark:text-white dark:hover:text-gray-900"
-                                        />
-                                        <span
-                                            class="animate-pulse bg-red-500 h-2 rounded-full w-2 absolute top-0 right-0"
-                                        ></span>
-                                    </div>
-                                </template>
-
-                                <template #content>
-                                    <div class="flex justify-between p-4">
-                                        <p>Notification Center</p>
-                                    </div>
-                                </template>
-                            </Dropdown> -->
-                            <!-- Settings Dropdown -->
                             <Dropdown align="right" width="48">
                                 <template #trigger>
                                     <span class="inline-flex rounded-md">

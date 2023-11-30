@@ -35,20 +35,16 @@ function generateYears (start, end) {
 const gradeCourses = ref([
     {
         name: '',
-        pivot: {
-            internal_mark: null,
-            external_mark: null
-        }
+        internal_mark: null,
+        external_mark: null
     }
 ])
 
 const add = () => {
     gradeCourses.value.push({
         name: '',
-        pivot: {
-            internal_mark: null,
-            external_mark: null
-        }
+        internal_mark: null,
+        external_mark: null
     })
 }
 
@@ -65,9 +61,19 @@ const handleFormSubmit = () => {
 }
 
 const handleGradeChange = () => {
-    gradeCourses.value = props.grades.find(
-        grade => grade.id === form.grade_id
-    ).courses
+    let courses = props.grades.find(grade => grade.id === form.grade_id).courses
+
+    if (courses.length) {
+        gradeCourses.value = courses
+    } else {
+        gradeCourses.value = [
+            {
+                name: '',
+                internal_mark: null,
+                external_mark: null
+            }
+        ]
+    }
 }
 
 onMounted(() => {
@@ -88,7 +94,7 @@ onMounted(() => {
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 Update your school's basic informations. Note that these changes
-                will impact whole system. So be careful. {{ gradeCourses }}
+                will impact whole system. So be careful.
             </p>
         </header>
 
@@ -205,8 +211,7 @@ onMounted(() => {
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    <!-- TODO::axios for grades courses -->
-                    Update your courses for grade
+                    Update your courses with marks.
                 </p>
             </header>
 
@@ -218,7 +223,6 @@ onMounted(() => {
                 <div class="col-span-4 mb-8">
                     <span class="p-float-label">
                         <InputText
-                            autofocus
                             v-model="course.name"
                             class="w-full"
                             :class="
@@ -243,13 +247,13 @@ onMounted(() => {
                 <div class="col-span-3 mb-8">
                     <span class="p-float-label">
                         <InputNumber
-                            v-model="course.pivot.external_mark"
+                            v-model="course.external_mark"
                             class="w-full"
                             :class="
                                 form.errors[
                                     'courses.' + index + '.external_mark'
                                 ] &&
-                                !course.pivot.external_mark &&
+                                !course.external_mark &&
                                 'p-invalid'
                             "
                             :use-grouping="false"
@@ -266,7 +270,7 @@ onMounted(() => {
                             (form.errors[
                                 'courses.' + index + '.external_mark'
                             ] &&
-                                !course.pivot.external_mark &&
+                                !course.external_mark &&
                                 form.errors[
                                     'courses.' + index + '.external_mark'
                                 ]) ||
@@ -278,13 +282,13 @@ onMounted(() => {
                 <div class="col-span-3 mb-8">
                     <span class="p-float-label">
                         <InputNumber
-                            v-model="course.pivot.internal_mark"
+                            v-model="course.internal_mark"
                             class="w-full"
                             :class="
                                 form.errors[
                                     'courses.' + index + '.internal_mark'
                                 ] &&
-                                !course.pivot.internal_mark &&
+                                !course.internal_mark &&
                                 'p-invalid'
                             "
                             :use-grouping="false"
@@ -302,7 +306,7 @@ onMounted(() => {
                             (form.errors[
                                 'courses.' + index + '.internal_mark'
                             ] &&
-                                !course.pivot.internal_mark &&
+                                !course.internal_mark &&
                                 form.errors[
                                     'courses.' + index + '.internal_mark'
                                 ]) ||

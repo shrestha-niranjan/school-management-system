@@ -8,7 +8,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import { createPinia } from 'pinia'
 import { useStyleStore } from '@/Store/style.js'
 import PrimeVue from 'primevue/config'
-import 'primevue/resources/themes/lara-dark-teal/theme.css'
+import 'primevue/resources/themes/lara-light-teal/theme.css'
 import 'primeicons/primeicons.css'
 import Toast from 'primevue/toast'
 

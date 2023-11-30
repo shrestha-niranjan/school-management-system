@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Grade;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
     /**
@@ -14,7 +14,13 @@ return new class extends Migration {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignIdFor(Grade::class)
+                ->constrained()
+                ->cascadeOnDelete();
+
             $table->string('name');
+            $table->unsignedInteger('internal_mark')->default(0);
+            $table->unsignedInteger('external_mark')->default(0);
 
             $table->timestamps();
         });

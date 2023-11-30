@@ -28,8 +28,8 @@ class SettingUpdateRequest extends FormRequest
             'academic_year' => 'required',
             'grade_id' => 'required',
             'courses.*.name' => 'required',
-            'courses.*.pivot.external_mark' => 'required',
-            'courses.*.pivot.internal_mark' => 'required'
+            'courses.*.external_mark' => 'required',
+            'courses.*.internal_mark' => 'required'
         ];
     }
 

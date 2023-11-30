@@ -18,7 +18,7 @@ class SchoolSettingSeeder extends Seeder
                 'address' => 'Manthali, Ramechhap',
                 'grade_id' => 10,
                 'established_at' => 2038,
-                'academic_year' => date('Y')
+                'academic_year' => date('Y') + 56
             ]);
     }
 }
