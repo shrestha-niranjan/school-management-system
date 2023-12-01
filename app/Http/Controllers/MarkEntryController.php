@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Course;
 use App\Models\MarkEntry;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\MarkEntryResource;
 use App\Http\Requests\StoreMarkEntryRequest;
@@ -21,7 +19,7 @@ class MarkEntryController extends Controller
     {
         $data['courses'] = CourseOptionResource::collection(
             Course::query()
-              ->get(['id', 'name'])
+              ->get()
         );
 
         $data['students'] = Student::query()
@@ -47,7 +45,7 @@ class MarkEntryController extends Controller
 
         $data['courses'] = CourseOptionResource::collection(
             Course::query()
-              ->get(['id', 'name'])
+              ->get()
         );
 
         $data['students'] = Student::query()

@@ -72,7 +72,6 @@ const onSubmit = () => {
               }
           })
 }
-
 </script>
 
 <template>
@@ -185,8 +184,13 @@ const onSubmit = () => {
                                 :minFractionDigits="2"
                                 :maxFractionDigits="2"
                                 :min="0"
-                                :max="100"
+                                :max="
+                                    courses.find(
+                                        course => course.id === mark.course_id
+                                    ).external_mark
+                                "
                             />
+
                             <label for="external_marks">External Marks</label>
                         </span>
 
@@ -219,7 +223,11 @@ const onSubmit = () => {
                                 :minFractionDigits="2"
                                 :maxFractionDigits="2"
                                 :min="0"
-                                :max="100"
+                                :max="
+                                    courses.find(
+                                        course => course.id === mark.course_id
+                                    ).internal_mark
+                                "
                             />
 
                             <label for="internal_marks">Internal Marks</label>

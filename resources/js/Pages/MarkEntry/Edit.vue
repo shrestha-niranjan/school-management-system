@@ -61,14 +61,6 @@ onMounted(() => {
             })
         }
     })
-
-    // if (props.courses.length !== props.item.mark_entries.length) {
-    //     form.marks.push({
-    //         course_id: course.id,
-    //         external: null,
-    //         internal: null
-    //     })
-    // }
 })
 
 const onSubmit = () => {
@@ -218,7 +210,7 @@ const onSubmit = () => {
                                 :minFractionDigits="2"
                                 :maxFractionDigits="2"
                                 :min="0"
-                                :max="100"
+                                :max="course.external_mark"
                             />
                             <label for="external_marks">External Marks</label>
                         </span>
@@ -263,7 +255,7 @@ const onSubmit = () => {
                                 :minFractionDigits="2"
                                 :maxFractionDigits="2"
                                 :min="0"
-                                :max="100"
+                                :max="course.internal_mark"
                             />
 
                             <label for="internal_marks">Internal Marks</label>
