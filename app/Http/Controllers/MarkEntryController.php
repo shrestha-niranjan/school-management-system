@@ -52,7 +52,7 @@ class MarkEntryController extends Controller
         $data['students'] = Student::query()
             ->get();
 
-        return Inertia::render('MarkEntry/Create', $data);
+        return Inertia::render('MarkEntry/Edit', $data);
     }
 
     public function index(): Response
@@ -103,10 +103,13 @@ class MarkEntryController extends Controller
         $data = $request->validated();
 
         foreach ($data['marks'] as $mark) {
+            $student->markEntries()->where('course_id', $mark['course_id'])->exists() ?
             $student->markEntries()->where('course_id', $mark['course_id'])->update([
                 'external' => $mark['external'],
                 'internal' => $mark['internal']
-            ]);
+            ]) : $student->markEntries()->create(
+                $mark
+            );
         }
 
         return to_route('mark-entry.index');
