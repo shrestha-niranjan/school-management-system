@@ -25,6 +25,7 @@ class MarkEntryController extends Controller
         );
 
         $data['students'] = Student::query()
+            ->doesntHave('markEntries')
             ->get();
 
         return Inertia::render('MarkEntry/Create', $data);
