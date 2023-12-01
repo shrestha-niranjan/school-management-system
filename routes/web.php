@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MarkEntryController;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     ;
 
     Route::resource('students', StudentController::class);
+    Route::resource('courses', CourseController::class);
 
     Route::get('mark-entry', [MarkEntryController::class, 'index'])->name('mark-entry.index');
     Route::post('mark-entry', [MarkEntryController::class, 'store'])->name('mark-entry.store');

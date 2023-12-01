@@ -2,10 +2,17 @@
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { ref, onMounted } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
+
+const toast = useToast()
+const confirm = useConfirm()
 
 const props = defineProps({
     grades: Object
 })
+
+const visible = ref(false)
 
 const schoolSetting = usePage().props.auth.schoolSetting
 
@@ -16,6 +23,13 @@ const form = useForm({
     academic_year: parseInt(schoolSetting.academic_year),
     grade_id: schoolSetting.grade_id,
     courses: []
+})
+
+const courseForm = useForm({
+    id: '',
+    name: '',
+    internal_mark: 0,
+    external_mark: 0
 })
 
 const currentYear = new Date().getFullYear()
@@ -32,27 +46,7 @@ function generateYears (start, end) {
     return years
 }
 
-const gradeCourses = ref([
-    {
-        id: null,
-        name: '',
-        internal_mark: null,
-        external_mark: null
-    }
-])
-
-const add = () => {
-    gradeCourses.value.push({
-        id: null,
-        name: '',
-        internal_mark: null,
-        external_mark: null
-    })
-}
-
-const remove = index => {
-    gradeCourses.value.splice(index, 1)
-}
+const gradeCourses = ref()
 
 const handleFormSubmit = () => {
     form.courses = gradeCourses
@@ -72,11 +66,88 @@ const handleGradeChange = () => {
             {
                 id: null,
                 name: '',
-                internal_mark: null,
-                external_mark: null
+                internal_mark: 0,
+                external_mark: 0
             }
         ]
     }
+}
+
+const handleAddCourse = () => {
+    courseForm.id
+        ? courseForm.patch(route('courses.update', { course: courseForm.id }), {
+              onSuccess: () => {
+                  toast.add({
+                      severity: 'info',
+                      summary: 'Updated',
+                      detail: 'Course updated successfully :)',
+                      life: 3000
+                  })
+              },
+              onFinish: () => {
+                  courseForm.reset()
+
+                  visible.value = false
+
+                  handleGradeChange()
+              },
+              preserveScroll: true
+          })
+        : courseForm.post(route('courses.store'), {
+              onSuccess: () => {
+                  toast.add({
+                      severity: 'info',
+                      summary: 'Created',
+                      detail: 'Course created successfully :)',
+                      life: 3000
+                  })
+              },
+              onFinish: () => {
+                  courseForm.reset()
+
+                  visible.value = false
+
+                  handleGradeChange()
+              },
+              preserveScroll: true
+          })
+}
+
+const handleEditCourse = id => {
+    visible.value = true
+
+    let selectedCourse = gradeCourses.value.find(course => course.id === id)
+
+    courseForm.name = selectedCourse.name
+    courseForm.id = selectedCourse.id
+    courseForm.external_mark = selectedCourse.external_mark
+    courseForm.internal_mark = selectedCourse.internal_mark
+}
+
+const handleDeleteCourse = id => {
+    confirm.require({
+        message: 'Are you sure you want to proceed?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            courseForm.delete(route('courses.destroy', { course: id }), {
+                onSuccess: () => {
+                    toast.add({
+                        severity: 'info',
+                        summary: 'Deleted',
+                        detail: 'Course deleted successfully :)',
+                        life: 3000
+                    })
+                }
+            })
+        }
+    })
+}
+
+const showCourseAddModal = () => {
+    visible.value = true
+
+    courseForm.reset()
 }
 
 onMounted(() => {
@@ -206,16 +277,26 @@ onMounted(() => {
 
             <Divider class="p-4" />
 
-            <header class="pb-8">
-                <h2
-                    class="text-lg font-medium text-gray-900 dark:text-gray-100"
-                >
-                    Courses
-                </h2>
+            <header class="pb-8 flex justify-between">
+                <div>
+                    <h2
+                        class="text-lg font-medium text-gray-900 dark:text-gray-100"
+                    >
+                        Courses
+                    </h2>
 
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Update your courses with marks.
-                </p>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        Update your courses with marks.
+                    </p>
+                </div>
+
+                <Button
+                    label="Add"
+                    icon="pi pi-plus"
+                    size="small"
+                    class="h-10 w-30"
+                    @click="showCourseAddModal"
+                />
             </header>
 
             <div
@@ -225,40 +306,24 @@ onMounted(() => {
             >
                 <div class="col-span-4 mb-8">
                     <span class="p-float-label">
-                        <InputText
-                            v-model="course.name"
+                        <Dropdown
+                            disabled
+                            v-model="course.id"
                             class="w-full"
-                            :class="
-                                form.errors['courses.' + index + '.name'] &&
-                                !course.name &&
-                                'p-invalid'
-                            "
+                            :options="gradeCourses"
+                            option-label="name"
+                            option-value="id"
                         />
                         <label for="name">Name</label>
                     </span>
-
-                    <small class="p-error" id="text-error">
-                        {{
-                            (form.errors['courses.' + index + '.name'] &&
-                                !course.name &&
-                                form.errors['courses.' + index + '.name']) ||
-                            '&nbsp;'
-                        }}
-                    </small>
                 </div>
 
                 <div class="col-span-3 mb-8">
                     <span class="p-float-label">
                         <InputNumber
                             v-model="course.external_mark"
+                            disabled
                             class="w-full"
-                            :class="
-                                form.errors[
-                                    'courses.' + index + '.external_mark'
-                                ] &&
-                                !course.external_mark &&
-                                'p-invalid'
-                            "
                             :use-grouping="false"
                             :minFractionDigits="2"
                             :maxFractionDigits="2"
@@ -267,33 +332,14 @@ onMounted(() => {
                         />
                         <label for="external_marks">External Marks</label>
                     </span>
-
-                    <small class="p-error" id="text-error">
-                        {{
-                            (form.errors[
-                                'courses.' + index + '.external_mark'
-                            ] &&
-                                !course.external_mark &&
-                                form.errors[
-                                    'courses.' + index + '.external_mark'
-                                ]) ||
-                            '&nbsp;'
-                        }}
-                    </small>
                 </div>
 
                 <div class="col-span-3 mb-8">
                     <span class="p-float-label">
                         <InputNumber
                             v-model="course.internal_mark"
+                            disabled
                             class="w-full"
-                            :class="
-                                form.errors[
-                                    'courses.' + index + '.internal_mark'
-                                ] &&
-                                !course.internal_mark &&
-                                'p-invalid'
-                            "
                             :use-grouping="false"
                             :minFractionDigits="2"
                             :maxFractionDigits="2"
@@ -303,34 +349,20 @@ onMounted(() => {
 
                         <label for="internal_marks">Internal Marks</label>
                     </span>
-
-                    <small class="p-error" id="text-error">
-                        {{
-                            (form.errors[
-                                'courses.' + index + '.internal_mark'
-                            ] &&
-                                !course.internal_mark &&
-                                form.errors[
-                                    'courses.' + index + '.internal_mark'
-                                ]) ||
-                            '&nbsp;'
-                        }}
-                    </small>
                 </div>
 
                 <div class="col-span-2 flex justify-around">
                     <Button
-                        @click="add"
-                        icon="pi pi-plus"
-                        severity="success"
+                        @click="handleEditCourse(course.id)"
+                        icon="pi pi-file-edit"
+                        severity="secondary"
                         rounded
-                        aria-label="Add"
+                        aria-label="Edit"
                         class="h-10 w-10"
                     />
 
                     <Button
-                        v-if="index !== 0"
-                        @click="remove(index)"
+                        @click="handleDeleteCourse(course.id)"
                         icon="pi pi-times"
                         severity="danger"
                         rounded
@@ -359,4 +391,115 @@ onMounted(() => {
             </div>
         </form>
     </section>
+
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Header"
+        :style="{ width: '50rem' }"
+        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+    >
+        <template #header>
+            <div class="font-bold">
+                {{ courseForm.id ? 'Edit' : 'Add' }} Course
+            </div>
+        </template>
+
+        <div class="mt-8 space-y-4">
+            <div>
+                <span class="p-float-label">
+                    <InputText
+                        id="courseName"
+                        autofocus
+                        v-model="courseForm.name"
+                        class="w-full"
+                        :class="
+                            courseForm.errors.name &&
+                            !courseForm.name &&
+                            'p-invalid'
+                        "
+                    />
+                    <label for="courseName">Course Name</label>
+                </span>
+
+                <small class="p-error" id="text-error">
+                    {{
+                        (courseForm.errors.name &&
+                            !courseForm.name &&
+                            courseForm.errors.name) ||
+                        '&nbsp;'
+                    }}
+                </small>
+            </div>
+
+            <div class="col-span-3 mb-8">
+                <span class="p-float-label">
+                    <InputNumber
+                        v-model="courseForm.internal_mark"
+                        class="w-full"
+                        :class="
+                            courseForm.errors.internal_mark &&
+                            !courseForm.internal_mark &&
+                            'p-invalid'
+                        "
+                        :use-grouping="false"
+                        :minFractionDigits="2"
+                        :maxFractionDigits="2"
+                        :min="0"
+                        :max="100"
+                    />
+
+                    <label for="internal_marks">Internal Marks</label>
+                </span>
+
+                <small class="p-error" id="text-error">
+                    {{
+                        (courseForm.errors.internal_mark &&
+                            !course.internal_mark &&
+                            courseForm.errors.internal_mark) ||
+                        '&nbsp;'
+                    }}
+                </small>
+            </div>
+
+            <div class="col-span-3 mb-8">
+                <span class="p-float-label">
+                    <InputNumber
+                        v-model="courseForm.external_mark"
+                        class="w-full"
+                        :class="
+                            courseForm.errors.external_mark &&
+                            !courseForm.external_mark &&
+                            'p-invalid'
+                        "
+                        :use-grouping="false"
+                        :minFractionDigits="2"
+                        :maxFractionDigits="2"
+                        :min="0"
+                        :max="100"
+                    />
+
+                    <label for="external_marks">External Marks</label>
+                </span>
+
+                <small class="p-error" id="text-error">
+                    {{
+                        (courseForm.errors.external_mark &&
+                            !course.external_mark &&
+                            courseForm.errors.external_mark) ||
+                        '&nbsp;'
+                    }}
+                </small>
+            </div>
+        </div>
+
+        <template #footer>
+            <Button
+                :label="courseForm.id ? 'Edit' : 'Add'"
+                icon="pi pi-check"
+                @click="handleAddCourse"
+                autofocus
+            />
+        </template>
+    </Dialog>
 </template>
