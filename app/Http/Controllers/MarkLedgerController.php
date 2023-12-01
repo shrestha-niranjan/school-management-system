@@ -17,7 +17,7 @@ class MarkLedgerController extends Controller
         ;
 
         $data['courses'] = Course::query()
-            ->pluck('name', 'id');
+            ->get();
 
         return
             Inertia::render('MarkLedger/Index', $data);

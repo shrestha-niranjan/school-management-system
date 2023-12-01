@@ -83,13 +83,15 @@ const handleAddCourse = () => {
                       detail: 'Course updated successfully :)',
                       life: 3000
                   })
+
+                  courseForm.reset()
               },
               onFinish: () => {
-                  courseForm.reset()
-
                   visible.value = false
 
                   handleGradeChange()
+
+                  courseForm.reset()
               },
               preserveScroll: true
           })
@@ -101,6 +103,8 @@ const handleAddCourse = () => {
                       detail: 'Course created successfully :)',
                       life: 3000
                   })
+
+                  courseForm.reset()
               },
               onFinish: () => {
                   courseForm.reset()
@@ -138,6 +142,8 @@ const handleDeleteCourse = id => {
                         detail: 'Course deleted successfully :)',
                         life: 3000
                     })
+
+                    handleGradeChange()
                 }
             })
         }

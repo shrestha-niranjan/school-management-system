@@ -26,4 +26,11 @@ class CourseController extends Controller
 
         return to_route('settings.edit');
     }
+
+    public function destroy(Course $course)
+    {
+        $course->delete();
+
+        return to_route('settings.edit');
+    }
 }

@@ -14,7 +14,7 @@ defineProps({
     students: {
         type: Object
     },
-    courses: Array
+    courses: Object
 })
 </script>
 
@@ -47,7 +47,7 @@ defineProps({
                                 </th>
                                 <template v-for="course in courses">
                                     <th class="border p-2" colspan="3">
-                                        {{ course }}
+                                        {{ course.name }}
                                     </th>
                                 </template>
 
@@ -66,12 +66,26 @@ defineProps({
 
                             <tr>
                                 <template v-for="course in courses">
-                                    <th class="border p-2">75</th>
-                                    <th class="border p-2">25</th>
-                                    <th class="border p-2">100</th>
+                                    <th class="border p-2">
+                                        {{ course.internal_mark }}
+                                    </th>
+                                    <th class="border p-2">
+                                        {{ course.external_mark }}
+                                    </th>
+                                    <th class="border p-2">
+                                        {{ course.full_mark }}
+                                    </th>
                                 </template>
 
-                                <th class="border p-2">700</th>
+                                <th class="border p-2">
+                                    {{
+                                        courses.reduce(
+                                            (total, subject) =>
+                                                total + subject.full_mark,
+                                            0
+                                        )
+                                    }}
+                                </th>
                             </tr>
                         </thead>
 

@@ -11,6 +11,8 @@ class Course extends Model
 {
     use HasFactory;
 
+    protected $appends = ['full_mark'];
+
     /**
      * Get all of the markEntries for the Course
      *
@@ -29,5 +31,10 @@ class Course extends Model
     public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);
+    }
+
+    public function getFullMarkAttribute()
+    {
+        return $this->internal_mark + $this->external_mark;
     }
 }
