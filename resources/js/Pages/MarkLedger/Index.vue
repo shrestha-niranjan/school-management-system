@@ -97,18 +97,18 @@ defineProps({
                                 <td class="border p-2">{{ index + 1 }}</td>
                                 <td class="border p-2">{{ student.name }}</td>
 
-                                <template v-for="(course, courseId) in courses">
+                                <template v-for="(course, index) in courses">
                                     <td class="border p-2">
                                         {{
                                             student.mark_entries.find(
                                                 markEntry =>
                                                     markEntry.course_id ==
-                                                    courseId
+                                                    course.id
                                             )
                                                 ? student.mark_entries.find(
                                                       markEntry =>
                                                           markEntry.course_id ==
-                                                          courseId
+                                                          course.id
                                                   ).internal
                                                 : 'N/A'
                                         }}
@@ -119,12 +119,12 @@ defineProps({
                                             student.mark_entries.find(
                                                 markEntry =>
                                                     markEntry.course_id ==
-                                                    courseId
+                                                    course.id
                                             )
                                                 ? student.mark_entries.find(
                                                       markEntry =>
                                                           markEntry.course_id ==
-                                                          courseId
+                                                          course.id
                                                   ).external
                                                 : 'N/A'
                                         }}
@@ -135,12 +135,12 @@ defineProps({
                                             student.mark_entries.find(
                                                 markEntry =>
                                                     markEntry.course_id ==
-                                                    courseId
+                                                    course.id
                                             )
                                                 ? student.mark_entries.find(
                                                       markEntry =>
                                                           markEntry.course_id ==
-                                                          courseId
+                                                          course.id
                                                   ).total
                                                 : 'N/A'
                                         }}
