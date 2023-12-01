@@ -21,8 +21,7 @@ const form = useForm({
     address: schoolSetting.address,
     established_at: schoolSetting.established_at,
     academic_year: parseInt(schoolSetting.academic_year),
-    grade_id: schoolSetting.grade_id,
-    courses: []
+    grade_id: schoolSetting.grade_id
 })
 
 const courseForm = useForm({
@@ -71,6 +70,8 @@ const handleGradeChange = () => {
             }
         ]
     }
+
+    handleFormSubmit()
 }
 
 const handleAddCourse = () => {
@@ -281,6 +282,26 @@ onMounted(() => {
                 </div>
             </div>
 
+            <div class="flex justify-end items-center gap-4">
+                <PrimaryButton :disabled="form.processing"
+                    >Update your setting</PrimaryButton
+                >
+
+                <Transition
+                    enter-active-class="transition ease-in-out"
+                    enter-from-class="opacity-0"
+                    leave-active-class="transition ease-in-out"
+                    leave-to-class="opacity-0"
+                >
+                    <p
+                        v-if="form.recentlySuccessful"
+                        class="text-sm text-gray-600 dark:text-gray-400"
+                    >
+                        Updated.
+                    </p>
+                </Transition>
+            </div>
+
             <Divider class="p-4" />
 
             <header class="pb-8 flex justify-between">
@@ -376,24 +397,6 @@ onMounted(() => {
                         class="h-10 w-10"
                     />
                 </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
-                <Transition
-                    enter-active-class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600 dark:text-gray-400"
-                    >
-                        Saved.
-                    </p>
-                </Transition>
             </div>
         </form>
     </section>

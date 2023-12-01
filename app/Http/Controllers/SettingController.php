@@ -36,22 +36,6 @@ class SettingController extends Controller
     {
         $data = $request->validated();
 
-        $courses = $data['courses'];
-
-        unset($data['courses']);
-
-        foreach ($courses as $course) {
-            Course::query()
-            ->updateOrCreate([
-                'id' => $course['id'],
-            ], [
-                'grade_id' => $data['grade_id'],
-                'name' => $course['name'],
-                'internal_mark' => $course['internal_mark'],
-                'external_mark' => $course['external_mark'],
-            ]);
-        }
-
         $schoolSetting = SchoolSetting::first();
 
         $schoolSetting->update($data);

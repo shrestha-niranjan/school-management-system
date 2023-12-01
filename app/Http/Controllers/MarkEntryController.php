@@ -58,6 +58,7 @@ class MarkEntryController extends Controller
     {
         $data['items'] =  MarkEntryResource::collection(
             Student::query()
+                ->where('grade_id', school_setting()->grade_id)
                 ->whereHas('markEntries')
                 ->paginate()
         );

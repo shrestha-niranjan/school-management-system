@@ -12,11 +12,13 @@ class MarkLedgerController extends Controller
     public function index(Request $request)
     {
         $data['students'] = Student::query()
+            ->where('grade_id', school_setting()->grade_id)
             ->with('markEntries')
             ->get()
         ;
 
         $data['courses'] = Course::query()
+            ->where('grade_id', school_setting()->grade_id)
             ->get();
 
         return

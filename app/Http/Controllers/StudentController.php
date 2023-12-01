@@ -38,6 +38,7 @@ class StudentController extends Controller
 
         $data['items'] = StudentResource::collection(
             Student::query()
+                ->where('grade_id', school_setting()->grade_id)
                 ->latest()
                 ->paginate($paginationCount)
                 ->withQueryString()

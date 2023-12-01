@@ -27,19 +27,6 @@ class SettingUpdateRequest extends FormRequest
             'established_at' => 'required',
             'academic_year' => 'required',
             'grade_id' => 'required',
-            'courses.*.name' => 'required',
-            'courses.*.external_mark' => 'required',
-            'courses.*.internal_mark' => 'required',
-            'courses.*.id' => '',
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'courses.*.name.required' => 'The course field is required.',
-            'courses.*.external_mark' => 'The external mark is required.',
-            'courses.*.internal_mark' => 'The internal mark is required.',
         ];
     }
 }
