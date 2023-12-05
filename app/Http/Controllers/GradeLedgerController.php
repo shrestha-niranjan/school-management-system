@@ -13,7 +13,7 @@ class GradeLedgerController extends Controller
     {
         $data['students'] = Student::query()
             ->where('grade_id', school_setting()->grade_id)
-            ->with('markEntries')
+            ->with('markEntries.course')
             ->get()
         ;
 

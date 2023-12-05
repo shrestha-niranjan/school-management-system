@@ -8,7 +8,7 @@ defineOptions({
     layout: AuthenticatedLayout
 })
 
-defineProps({
+const props = defineProps({
     students: {
         type: Object
     },
@@ -97,6 +97,19 @@ function getGrade (gp) {
     }
 
     return '-'
+}
+
+function calculateGPA (student) {
+    let total = 0
+
+    student.mark_entries.forEach(mark => {
+        total += getGrade(checkAvgGP(mark.total)) * mark.course.credit_hour
+    })
+
+    return (
+        total /
+        props.courses.reduce((total, course) => total + course.credit_hour, 0)
+    ).toFixed(2)
 }
 </script>
 
@@ -241,13 +254,15 @@ function getGrade (gp) {
                                 </template>
 
                                 <td class="border p-2 font-bold">
-                                    {{
-                                        student.mark_entries.reduce(
+                                    {{ calculateGPA(student) }}
+
+                                    <!-- {{
+                                        student.mark_entries.for(
                                             (total, markEntry) =>
                                                 total + markEntry.total,
                                             0
                                         )
-                                    }}
+                                    }} -->
                                 </td>
                             </tr>
 
