@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { mdiPlus } from '@mdi/js'
 import BaseButton from '@/Components/BaseButton.vue'
 import SectionMain from '@/Components/SectionMain.vue'
+import { usePage } from '@inertiajs/vue3'
 
 defineOptions({
     layout: AuthenticatedLayout
@@ -15,7 +16,31 @@ const props = defineProps({
     courses: Object
 })
 
+const schoolSetting = usePage().props.auth.schoolSetting
+
 function checkExternalGP (mark) {
+    if (schoolSetting.grade_id === 7 || schoolSetting.grade_id === 8) {
+        if (mark >= 45) {
+            return 'A+'
+        } else if (mark >= 40) {
+            return 'A'
+        } else if (mark >= 35) {
+            return 'B+'
+        } else if (mark >= 30) {
+            return 'B'
+        } else if (mark >= 25) {
+            return 'C+'
+        } else if (mark >= 20) {
+            return 'C'
+        } else if (mark >= 17.5) {
+            return 'D'
+        } else if (mark < 17.5 && mark > 0) {
+            return 'NG'
+        } else if (mark === 0) {
+            return 0
+        }
+    }
+
     if (mark >= 67.5) {
         return 'A+'
     } else if (mark >= 60) {
@@ -38,6 +63,28 @@ function checkExternalGP (mark) {
 }
 
 function checkInternalGP (mark) {
+    if (schoolSetting.grade_id === 7 || schoolSetting.grade_id === 8) {
+        if (mark >= 45) {
+            return 'A+'
+        } else if (mark >= 40) {
+            return 'A'
+        } else if (mark >= 35) {
+            return 'B+'
+        } else if (mark >= 30) {
+            return 'B'
+        } else if (mark >= 25) {
+            return 'C+'
+        } else if (mark >= 20) {
+            return 'C'
+        } else if (mark >= 17.5) {
+            return 'D'
+        } else if (mark < 17.5 && mark > 0) {
+            return 'NG'
+        } else if (mark === 0) {
+            return 0
+        }
+    }
+
     if (mark >= 22.5) {
         return 'A+'
     } else if (mark >= 20) {
@@ -105,7 +152,9 @@ function calculateGPA (student) {
     let total = 0
 
     student.mark_entries.forEach(mark => {
-        total += getGrade(checkAvgGP(mark.total)) * mark.course.credit_hour
+        total +=
+            parseFloat(getGrade(checkAvgGP(mark.total))) *
+            mark.course.credit_hour
     })
 
     return (
