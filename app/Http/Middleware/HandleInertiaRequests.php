@@ -66,7 +66,7 @@ class HandleInertiaRequests extends Middleware
                 ],
                 [
                     'label' => 'Grade Ledger',
-                    'route' => 'mark-entry.index',
+                    'route' => 'grade-ledger.index',
                     'icon' => 'mdiCashRegister',
                     'isVisible' => true,
                 ],

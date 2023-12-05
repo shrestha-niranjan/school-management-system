@@ -8,6 +8,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MarkEntryController;
 use App\Http\Controllers\MarkSheetController;
 use App\Http\Controllers\MarkLedgerController;
+use App\Http\Controllers\GradeLedgerController;
 
 Route::get('/', function () {
     return to_route('dashboard');
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('students', StudentController::class);
     Route::resource('courses', CourseController::class);
 
+
     Route::get('mark-entry', [MarkEntryController::class, 'index'])->name('mark-entry.index');
     Route::post('mark-entry', [MarkEntryController::class, 'store'])->name('mark-entry.store');
     Route::get('mark-entry/create', [MarkEntryController::class, 'create'])->name('mark-entry.create');
@@ -39,7 +41,10 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'mark-ledger', 'as' => 'mark-ledger.'], function () {
         Route::get('/', [MarkLedgerController::class, 'index'])->name('index');
+    });
 
+    Route::group(['prefix' => 'grade-ledger', 'as' => 'grade-ledger.'], function () {
+        Route::get('/', [GradeLedgerController::class, 'index'])->name('index');
     });
 
     Route::get('marksheet/{student}', MarkSheetController::class)->name('generate.marksheet');
