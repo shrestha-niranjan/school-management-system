@@ -50,8 +50,10 @@ function checkInternalGP (mark) {
         return 'C'
     } else if (mark >= 8.75) {
         return 'D'
-    } else if (mark < 8.75) {
+    } else if (mark < 8.75 && mark > 0) {
         return 'NG'
+    } else if (mark === 0) {
+        return 0
     }
 }
 
