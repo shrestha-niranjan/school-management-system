@@ -28,7 +28,8 @@ const courseForm = useForm({
     id: '',
     name: '',
     internal_mark: 0,
-    external_mark: 0
+    external_mark: 0,
+    credit_hour: 0
 })
 
 const currentYear = new Date().getFullYear()
@@ -329,56 +330,74 @@ onMounted(() => {
             <div
                 v-for="(course, index) in gradeCourses"
                 :key="index"
-                class="grid grid-cols-1 sm:grid-cols-12 gap-4"
+                class="flex space-x-4"
             >
-                <div class="col-span-4 mb-8">
-                    <span class="p-float-label">
-                        <Dropdown
-                            disabled
-                            v-model="course.id"
-                            class="w-full"
-                            :options="gradeCourses"
-                            option-label="name"
-                            option-value="id"
-                        />
-                        <label for="name">Name</label>
-                    </span>
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                    <div class="col-span-3 mb-8">
+                        <span class="p-float-label">
+                            <Dropdown
+                                disabled
+                                v-model="course.id"
+                                class="w-full"
+                                :options="gradeCourses"
+                                option-label="name"
+                                option-value="id"
+                            />
+                            <label for="name">Name</label>
+                        </span>
+                    </div>
+
+                    <div class="col-span-3 mb-8">
+                        <span class="p-float-label">
+                            <InputNumber
+                                v-model="course.credit_hour"
+                                disabled
+                                :use-grouping="false"
+                                :minFractionDigits="2"
+                                :maxFractionDigits="2"
+                                :min="0"
+                                :max="100"
+                            />
+
+                            <label>Credit Hours</label>
+                        </span>
+                    </div>
+
+                    <div class="col-span-3 mb-8">
+                        <span class="p-float-label">
+                            <InputNumber
+                                v-model="course.external_mark"
+                                disabled
+                                class="w-full"
+                                :use-grouping="false"
+                                :minFractionDigits="2"
+                                :maxFractionDigits="2"
+                                :min="0"
+                                :max="100"
+                            />
+                            <label for="external_marks">External Marks</label>
+                        </span>
+                    </div>
+
+                    <div class="col-span-3 mb-8">
+                        <span class="p-float-label">
+                            <InputNumber
+                                v-model="course.internal_mark"
+                                disabled
+                                class="w-full"
+                                :use-grouping="false"
+                                :minFractionDigits="2"
+                                :maxFractionDigits="2"
+                                :min="0"
+                                :max="100"
+                            />
+
+                            <label for="internal_marks">Internal Marks</label>
+                        </span>
+                    </div>
                 </div>
 
-                <div class="col-span-3 mb-8">
-                    <span class="p-float-label">
-                        <InputNumber
-                            v-model="course.external_mark"
-                            disabled
-                            class="w-full"
-                            :use-grouping="false"
-                            :minFractionDigits="2"
-                            :maxFractionDigits="2"
-                            :min="0"
-                            :max="100"
-                        />
-                        <label for="external_marks">External Marks</label>
-                    </span>
-                </div>
-
-                <div class="col-span-3 mb-8">
-                    <span class="p-float-label">
-                        <InputNumber
-                            v-model="course.internal_mark"
-                            disabled
-                            class="w-full"
-                            :use-grouping="false"
-                            :minFractionDigits="2"
-                            :maxFractionDigits="2"
-                            :min="0"
-                            :max="100"
-                        />
-
-                        <label for="internal_marks">Internal Marks</label>
-                    </span>
-                </div>
-
-                <div class="col-span-2 flex justify-around">
+                <div class="flex space-x-2">
                     <Button
                         @click="handleEditCourse(course.id)"
                         icon="pi pi-file-edit"
@@ -436,6 +455,36 @@ onMounted(() => {
                         (courseForm.errors.name &&
                             !courseForm.name &&
                             courseForm.errors.name) ||
+                        '&nbsp;'
+                    }}
+                </small>
+            </div>
+
+            <div class="col-span-3 mb-8">
+                <span class="p-float-label">
+                    <InputNumber
+                        v-model="courseForm.credit_hour"
+                        class="w-full"
+                        :class="
+                            courseForm.errors.credit_hour &&
+                            !courseForm.credit_hour &&
+                            'p-invalid'
+                        "
+                        :use-grouping="false"
+                        :minFractionDigits="2"
+                        :maxFractionDigits="2"
+                        :min="0"
+                        :max="100"
+                    />
+
+                    <label>Credit Hours</label>
+                </span>
+
+                <small class="p-error" id="text-error">
+                    {{
+                        (courseForm.errors.internal_mark &&
+                            !course.internal_mark &&
+                            courseForm.errors.internal_mark) ||
                         '&nbsp;'
                     }}
                 </small>

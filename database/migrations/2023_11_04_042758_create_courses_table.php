@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('name');
             $table->unsignedInteger('internal_mark')->default(0);
             $table->unsignedInteger('external_mark')->default(0);
+            $table->unsignedInteger('credit_hour')->default(0);
 
             $table->timestamps();
         });
