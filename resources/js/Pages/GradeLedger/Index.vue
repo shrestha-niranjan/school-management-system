@@ -30,8 +30,10 @@ function checkExternalGP (mark) {
         return 'C'
     } else if (mark >= 26.25) {
         return 'D'
-    } else if (mark < 26.25) {
+    } else if (mark < 26.25 && mark > 0) {
         return 'NG'
+    } else if (mark === 0) {
+        return 0
     }
 }
 
@@ -72,8 +74,10 @@ function checkAvgGP (mark) {
         return 'C'
     } else if (mark >= 35) {
         return 'D'
-    } else if (mark < 35) {
+    } else if (mark < 35 && mark > 0) {
         return 'NG'
+    } else if (mark === 0) {
+        return 0
     }
 }
 
@@ -95,8 +99,6 @@ function getGrade (gp) {
     } else if (gp === 'NG') {
         return '0'
     }
-
-    return '-'
 }
 
 function calculateGPA (student) {
