@@ -240,7 +240,7 @@ const toggleDarkMode = () => {
                             target="_blank"
                             class="font-bold hover:underline"
                         >
-                            Niranjans
+                            Niranjan Shrestha
                         </a>
                         @ {{ new Date().getFullYear() }}
                     </div>
