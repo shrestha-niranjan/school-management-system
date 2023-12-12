@@ -46,6 +46,7 @@ class MarkEntryController extends Controller
 
         $data['courses'] = CourseOptionResource::collection(
             Course::query()
+                ->where('grade_id', school_setting()->grade_id)
               ->get()
         );
 
